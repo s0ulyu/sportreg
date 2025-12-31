@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tối ưu lịch thi đấu - SportReg</title>
+    <link rel="stylesheet" href="/dashboard/dashboard.css">
+    <link rel="stylesheet" href="schedule-optimize.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <input type="checkbox" id="nav-toggle">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="#"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
+                <li><a href="#" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
+                <li><a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a></li>
+                <li><a href="#"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
+                <li><a href="#"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
+                <li><a href="#"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle"><i class='bx bx-menu'></i></label>
+                Tối ưu lịch thi đấu
+            </h2>
+            <div class="user-wrapper">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" width="40px" height="40px" alt="Avatar">
+                <div>
+                    <h4>Admin User</h4>
+                    <small>Quản trị viên</small>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="filter-group">
+                    <label for="date-filter">Chọn ngày</label>
+                    <input type="date" id="date-filter" value="2024-08-12">
+                </div>
+                <div class="filter-group">
+                    <label for="venue-filter">Chọn sân</label>
+                    <select id="venue-filter">
+                        <option value="all">Tất cả sân</option>
+                        <option value="san-a1" selected>Sân A1</option>
+                        <option value="san-a2">Sân A2</option>
+                        <option value="nha-thi-dau">Nhà thi đấu</option>
+                    </select>
+                </div>
+                <button class="btn-apply">Áp dụng</button>
+            </div>
+
+            <div class="schedule-grid">
+                <!-- Timeline -->
+                <div class="timeline-container">
+                    <div class="timeline-header">
+                        <h3>Lịch thi đấu Sân A1 - Ngày 12/08/2024</h3>
+                    </div>
+                    <div class="timeline-body">
+                        <!-- Slot 1: OK -->
+                        <div class="timeline-slot">
+                            <div class="time-marker">08:00</div>
+                            <div class="slot-card">
+                                <div class="match-title">Vòng loại - Bảng A</div>
+                                <p>Hải Châu FC vs. Sơn Trà FC</p>
+                                <span class="sport-tag"><i class='bx bx-football'></i> Bóng đá</span>
+                            </div>
+                        </div>
+
+                        <!-- Slot 2: Conflict -->
+                        <div class="timeline-slot conflict" data-tooltip="Sân A1 đã được sử dụng cho 2 trận đấu cùng lúc.">
+                            <div class="time-marker">09:00</div>
+                            <div class="slot-card">
+                                <div class="conflict-header">
+                                    <i class='bx bxs-error-circle'></i>
+                                    <span>Trùng lịch</span>
+                                </div>
+                                <div class="match-title">Bán kết 1 - Đơn nam</div>
+                                <p>Minh Anh vs. Quốc Anh</p>
+                                <span class="sport-tag"><i class='bx bx-tennis-ball'></i> Tennis</span>
+                            </div>
+                            <div class="slot-card">
+                                <div class="match-title">Vòng loại - Bảng B</div>
+                                <p>Thanh Khê FC vs. Liên Chiểu FC</p>
+                                <span class="sport-tag"><i class='bx bx-football'></i> Bóng đá</span>
+                            </div>
+                        </div>
+
+                        <!-- Slot 3: OK -->
+                        <div class="timeline-slot">
+                            <div class="time-marker">10:00</div>
+                            <div class="slot-card">
+                                <div class="match-title">Vòng loại - Đôi nam</div>
+                                <p>Team 1 vs. Team 2</p>
+                                <span class="sport-tag"><i class='bx bx-ball'></i> Cầu lông</span>
+                            </div>
+                        </div>
+
+                        <!-- Slot 4: Empty -->
+                        <div class="timeline-slot empty">
+                            <div class="time-marker">11:00</div>
+                            <div class="slot-card">
+                                <p>Slot trống</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Suggestions -->
+                <div class="suggestions-container">
+                    <div class="suggestions-header">
+                        <h3><i class='bx bx-bulb'></i> Gợi ý slot trống</h3>
+                    </div>
+                    <div class="suggestions-body">
+                        <div class="suggestion-item">
+                            <p><strong>Sân A2</strong> còn trống lúc <strong>09:00 - 10:00</strong></p>
+                            <button>Chuyển lịch</button>
+                        </div>
+                        <div class="suggestion-item">
+                            <p><strong>Sân A1</strong> còn trống lúc <strong>11:00 - 12:00</strong></p>
+                            <button>Chuyển lịch</button>
+                        </div>
+                        <div class="suggestion-item">
+                            <p><strong>Nhà thi đấu</strong> còn trống lúc <strong>09:00 - 10:00</strong></p>
+                            <button>Chuyển lịch</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const dateInput = document.getElementById('date-filter');
+        const venueSelect = document.getElementById('venue-filter');
+        const slots = document.querySelectorAll('.timeline-slot:not(.empty)');
+        const suggestionsBody = document.querySelector('.suggestions-body');
+
+        // Hàm tính toán thời gian kết thúc (Start + 90 phút)
+        function calculateEndTime(startTime) {
+            const [h, m] = startTime.split(':').map(Number);
+            const date = new Date();
+            date.setHours(h, m + 90); // Cộng 90 phút
+            return date.toTimeString().slice(0, 5); // Trả về HH:mm
+        }
+
+        async function checkConflicts() {
+            const date = dateInput.value;
+            const venue = venueSelect.value;
+            
+            // Xóa gợi ý cũ
+            suggestionsBody.innerHTML = '';
+
+            for (const slot of slots) {
+                // Reset trạng thái
+                slot.classList.remove('conflict');
+                const conflictHeader = slot.querySelector('.conflict-header');
+                if(conflictHeader) conflictHeader.remove();
+
+                // Lấy giờ từ giao diện
+                const startTime = slot.querySelector('.time-marker').innerText.trim();
+                const endTime = calculateEndTime(startTime);
+
+                try {
+                    const response = await fetch('/api/matches/check-conflict', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ startTime, endTime, venue, date })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.hasConflict) {
+                        // 1. Hiển thị Conflict
+                        slot.classList.add('conflict');
+                        
+                        // Thêm header báo lỗi vào card
+                        const card = slot.querySelector('.slot-card');
+                        const header = document.createElement('div');
+                        header.className = 'conflict-header';
+                        header.innerHTML = `<i class='bx bxs-error-circle'></i> <span>Trùng với: ${data.conflictingMatch.team1_name} vs ${data.conflictingMatch.team2_name}</span>`;
+                        card.prepend(header);
+
+                        // 2. Gợi ý slot trống (Nâng cao)
+                        suggestSlot(startTime, venue);
+                    }
+                } catch (error) {
+                    console.error('Lỗi kiểm tra:', error);
+                }
+            }
+        }
+
+        function suggestSlot(conflictTime, venue) {
+            // Logic đơn giản: Gợi ý giờ tiếp theo (+2 tiếng)
+            const [h, m] = conflictTime.split(':').map(Number);
+            const nextTime = `${String(h + 2).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+            
+            const item = `<div class="suggestion-item"><p><strong>${venue}</strong> có thể trống lúc <strong>${nextTime}</strong></p><button>Chuyển lịch</button></div>`;
+            suggestionsBody.innerHTML += item;
+        }
+
+        // Bắt sự kiện thay đổi
+        dateInput.addEventListener('change', checkConflicts);
+        venueSelect.addEventListener('change', checkConflicts);
+
+        // Chạy kiểm tra ngay khi tải trang để cập nhật trạng thái thực tế
+        checkConflicts();
+    </script>
+    <!-- Script Phân quyền & Bảo mật -->
+    <script src="/js/auth.js"></script>
+</body>
+</html>

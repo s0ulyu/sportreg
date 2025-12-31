@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết giải đấu - SportReg</title>
+    <link rel="stylesheet" href="tournament-detail.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <input type="checkbox" id="nav-toggle">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="#"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
+                <li><a href="#" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
+                <li><a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a></li>
+                <li><a href="#"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
+                <li><a href="#"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
+                <li><a href="#"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle"><i class='bx bx-menu'></i></label>
+                Chi tiết giải đấu
+            </h2>
+            <div class="user-wrapper">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" width="40px" height="40px" alt="Avatar">
+                <div>
+                    <h4>Admin User</h4>
+                    <small>Quản trị viên</small>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Banner / Hero Section -->
+            <div class="tournament-hero">
+                <div class="hero-content">
+                    <span class="badge success">Đang mở đăng ký</span>
+                    <h1>Marathon Mùa Hè 2024</h1>
+                    <div class="hero-meta">
+                        <span><i class='bx bx-map'></i> Công viên Biển Đông, Đà Nẵng</span>
+                        <span><i class='bx bx-calendar'></i> 15/06/2024 - 16/06/2024</span>
+                        <span><i class='bx bx-run'></i> Điền kinh</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <!-- Left Column: Info & Schedule -->
+                <div class="detail-left">
+                    <div class="section-card">
+                        <h3>Giới thiệu</h3>
+                        <p>Giải Marathon Mùa Hè 2024 là sự kiện thể thao lớn nhất trong năm tại Đà Nẵng, quy tụ hơn 5.000 vận động viên chuyên nghiệp và phong trào. Cung đường chạy tuyệt đẹp dọc bờ biển Mỹ Khê hứa hẹn mang lại trải nghiệm khó quên.</p>
+                        <p>Các cự ly thi đấu: 5km, 10km, 21km và 42km.</p>
+                    </div>
+
+                    <div class="section-card">
+                        <h3>Lịch thi đấu</h3>
+                        <div class="table-responsive">
+                            <table class="schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th>Thời gian</th>
+                                        <th>Nội dung</th>
+                                        <th>Địa điểm</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>04:30 - 15/06</td>
+                                        <td>Xuất phát 42km</td>
+                                        <td>Cổng chính</td>
+                                        <td>Check-in trước 30p</td>
+                                    </tr>
+                                    <tr>
+                                        <td>05:00 - 15/06</td>
+                                        <td>Xuất phát 21km</td>
+                                        <td>Cổng chính</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>06:00 - 15/06</td>
+                                        <td>Xuất phát 10km & 5km</td>
+                                        <td>Cổng phụ</td>
+                                        <td>Vui chạy</td>
+                                    </tr>
+                                    <tr>
+                                        <td>09:00 - 15/06</td>
+                                        <td>Trao giải</td>
+                                        <td>Sân khấu chính</td>
+                                        <td>Tất cả cự ly</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Registration & Stats -->
+                <div class="detail-right">
+                    <!-- Registration Card -->
+                    <div class="reg-card">
+                        <div class="reg-header">
+                            <h3>Thông tin đăng ký</h3>
+                            <span class="price">500.000đ</span>
+                        </div>
+                        <div class="reg-body">
+                            <ul>
+                                <li><i class='bx bx-time'></i> Hạn đăng ký: <strong>10/06/2024</strong></li>
+                                <li><i class='bx bx-user-check'></i> Đã đăng ký: <strong>1,240/2,000</strong></li>
+                                <li><i class='bx bx-id-card'></i> Bao gồm: Bib, Áo, Medal</li>
+                            </ul>
+                            <div class="user-status">
+                                <i class='bx bx-info-circle'></i> Bạn chưa đăng ký giải này
+                            </div>
+                            <button class="btn-register">Đăng ký tham gia ngay</button>
+                        </div>
+                    </div>
+
+                    <!-- Organizer Info -->
+                    <div class="organizer-card">
+                        <h4>Ban tổ chức</h4>
+                        <div class="org-info">
+                            <img src="https://ui-avatars.com/api/?name=Da+Nang+Sport&background=0D8ABC&color=fff" alt="Org">
+                            <div>
+                                <strong>Sở TDTT Đà Nẵng</strong>
+                                <small>Liên hệ: contact@danang.gov.vn</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const btnRegister = document.querySelector('.btn-register');
+
+        btnRegister.addEventListener('click', async () => {
+            // 1. Lấy thông tin user từ localStorage
+            const userStr = localStorage.getItem('currentUser');
+            
+            if (!userStr) {
+                alert('Vui lòng đăng nhập để thực hiện đăng ký!');
+                window.location.href = '/login/login.html'; // Chuyển hướng về trang đăng nhập
+                return;
+            }
+
+            const user = JSON.parse(userStr);
+            const userId = user.id;
+            const tournamentId = 1; // Hardcode ID giải đấu theo yêu cầu
+
+            try {
+                // 2. Gọi API đăng ký
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, tournamentId })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert(data.message);
+                    // Cập nhật giao diện nút bấm
+                    btnRegister.textContent = 'Đang chờ duyệt';
+                    btnRegister.disabled = true;
+                    btnRegister.style.opacity = '0.6';
+                    btnRegister.style.cursor = 'not-allowed';
+                } else {
+                    alert(data.message || 'Đăng ký thất bại');
+                }
+            } catch (error) {
+                console.error('Lỗi:', error);
+                alert('Không thể kết nối đến Server.');
+            }
+        });
+    </script>
+</body>
+</html>

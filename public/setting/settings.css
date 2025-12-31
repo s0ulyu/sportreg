@@ -1,0 +1,371 @@
+/* Reset & Font */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style-type: none;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --main-color: #2563eb;
+    --color-dark: #1e293b;
+    --text-grey: #64748b;
+    --bg-color: #f1f5f9;
+    --white: #ffffff;
+    --shadow: 0 10px 30px rgba(0,0,0,0.05);
+    --danger: #ef4444;
+}
+
+body {
+    background: var(--bg-color);
+}
+
+/* --- Layout (Sidebar & Header) - Reused --- */
+.sidebar {
+    width: 260px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #0f172a;
+    z-index: 100;
+    transition: width 300ms;
+}
+
+.sidebar-brand {
+    height: 90px;
+    padding: 1rem 0rem 1rem 2rem;
+    color: var(--white);
+}
+
+.sidebar-brand span { display: inline-block; padding-right: 1rem; }
+.sidebar-menu { margin-top: 1rem; }
+.sidebar-menu li { width: 100%; margin-bottom: 1.3rem; padding-left: 1rem; }
+.sidebar-menu a { padding-left: 1rem; display: block; color: #e2e8f0; font-size: 1.1rem; }
+.sidebar-menu a:hover { background: rgba(255, 255, 255, 0.1); color: var(--white); border-radius: 30px 0px 0px 30px; }
+.sidebar-menu a.active { background: var(--white); padding-top: 1rem; padding-bottom: 1rem; color: var(--main-color); border-radius: 30px 0px 0px 30px; }
+.sidebar-menu a span:first-child { font-size: 1.5rem; padding-right: 1rem; }
+
+.main-content { transition: margin-left 300ms; margin-left: 260px; }
+
+header {
+    background: var(--white);
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    box-shadow: var(--shadow);
+    position: fixed;
+    left: 260px;
+    width: calc(100% - 260px);
+    top: 0;
+    z-index: 100;
+    transition: left 300ms, width 300ms;
+}
+
+header h2 { color: var(--color-dark); display: flex; align-items: center; }
+header label span { font-size: 1.7rem; padding-right: 1rem; }
+.user-wrapper { display: flex; align-items: center; }
+.user-wrapper img { border-radius: 50%; margin-right: 1rem; }
+.user-wrapper small { display: inline-block; color: var(--text-grey); }
+
+main {
+    margin-top: 85px;
+    padding: 2rem 1.5rem;
+    background: var(--bg-color);
+    min-height: calc(100vh - 90px);
+}
+
+/* --- Settings Page Specific Styles --- */
+
+.settings-wrapper {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+/* Settings Sidebar (Tabs) */
+.settings-nav {
+    background: var(--white);
+    width: 280px;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    flex-shrink: 0;
+}
+
+.settings-nav h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--text-grey);
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.tab-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: var(--color-dark);
+    font-weight: 500;
+    border-radius: 30px; /* Bo tròn dạng pill */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 0.5rem;
+}
+
+.tab-link i {
+    font-size: 1.2rem;
+    margin-right: 10px;
+    color: var(--text-grey);
+}
+
+.tab-link:hover {
+    background: #eff6ff;
+    color: var(--main-color);
+}
+
+/* Settings Content */
+.settings-content {
+    flex-grow: 1;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    min-height: 500px;
+}
+
+.tab-pane {
+    display: none; /* Ẩn tất cả tab mặc định */
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.pane-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 1rem;
+}
+
+.pane-header h2 {
+    font-size: 1.5rem;
+    color: var(--color-dark);
+    margin-bottom: 0.5rem;
+}
+
+.pane-header p {
+    color: var(--text-grey);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--color-dark);
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    color: var(--color-dark);
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: var(--main-color);
+}
+
+.form-group input:disabled {
+    background: #f8fafc;
+    color: var(--text-grey);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--text-grey);
+    font-size: 0.85rem;
+}
+
+.btn-save {
+    background: var(--main-color);
+    color: var(--white);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-save:hover {
+    background: #1d4ed8;
+}
+
+/* Toggle Switch */
+.toggle-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.toggle-group div p {
+    font-size: 0.9rem;
+    color: var(--text-grey);
+    margin-top: 0.2rem;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .3s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider { background-color: var(--main-color); }
+input:checked + .slider:before { transform: translateX(22px); }
+
+
+/* System Actions */
+.system-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.system-action.danger {
+    background: #fef2f2;
+    border: 1px solid #fee2e2;
+}
+
+.btn-outline { background: transparent; border: 1px solid var(--main-color); color: var(--main-color); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+.btn-danger { background: var(--danger); color: var(--white); border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+
+/* --- Theme Preview Styles --- */
+.theme-selection {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.theme-option {
+    cursor: pointer;
+    text-align: center;
+}
+
+.theme-option input { display: none; }
+
+.theme-preview {
+    width: 150px;
+    height: 100px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    margin-bottom: 0.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.theme-option input:checked + .theme-preview {
+    border-color: var(--main-color);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.theme-preview.light { background: #f8fafc; }
+.theme-preview.light::before { content: ''; position: absolute; top: 10px; left: 10px; width: 30px; height: 80px; background: #fff; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.theme-preview.light::after { content: ''; position: absolute; top: 10px; left: 50px; width: 80px; height: 80px; background: #fff; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+.theme-preview.dark { background: #1e293b; }
+.theme-preview.dark::before { content: ''; position: absolute; top: 10px; left: 10px; width: 30px; height: 80px; background: #334155; border-radius: 4px; }
+.theme-preview.dark::after { content: ''; position: absolute; top: 10px; left: 50px; width: 80px; height: 80px; background: #334155; border-radius: 4px; }
+
+.theme-option span {
+    font-weight: 500;
+    color: var(--color-dark);
+}
+
+/* --- Logic Tabs (Radio Hack) --- */
+#tab-account:checked ~ .settings-nav label[for="tab-account"],
+#tab-security:checked ~ .settings-nav label[for="tab-security"],
+#tab-notification:checked ~ .settings-nav label[for="tab-notification"],
+#tab-interface:checked ~ .settings-nav label[for="tab-interface"],
+#tab-system:checked ~ .settings-nav label[for="tab-system"] {
+    background: var(--main-color);
+    color: var(--white);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+
+#tab-account:checked ~ .settings-content #pane-account,
+#tab-security:checked ~ .settings-content #pane-security,
+#tab-notification:checked ~ .settings-content #pane-notification,
+#tab-interface:checked ~ .settings-content #pane-interface,
+#tab-system:checked ~ .settings-content #pane-system {
+    display: block;
+}
+
+/* Fix icon color on active tab */
+#tab-account:checked ~ .settings-nav label[for="tab-account"] i,
+#tab-security:checked ~ .settings-nav label[for="tab-security"] i,
+#tab-notification:checked ~ .settings-nav label[for="tab-notification"] i,
+#tab-interface:checked ~ .settings-nav label[for="tab-interface"] i,
+#tab-system:checked ~ .settings-nav label[for="tab-system"] i {
+    color: var(--white);
+}
+
+/* Responsive */
+#nav-toggle { display: none; }
+@media only screen and (max-width: 1200px) { .sidebar { width: 70px; } .sidebar .sidebar-brand, .sidebar li { padding-left: 1rem; text-align: center; } .sidebar li a { padding-left: 0rem; } .sidebar .sidebar-brand h2 span, .sidebar li a span { display: none; } .main-content, header { margin-left: 70px; width: calc(100% - 70px); left: 70px; } }
+@media only screen and (max-width: 900px) { .settings-wrapper { flex-direction: column; } .settings-nav { width: 100%; display: flex; overflow-x: auto; padding: 1rem; gap: 0.5rem; } .tab-link { margin-bottom: 0; white-space: nowrap; } }
+@media only screen and (max-width: 768px) { .sidebar { left: 0 !important; width: 70px; } .main-content, header { width: calc(100% - 70px); margin-left: 70px; left: 70px; } #nav-toggle:checked + .sidebar { left: 0 !important; z-index: 100; width: 260px; } }
+
+/* --- Role-based Visibility --- */
+/* Chỉ hiển thị tab Hệ thống nếu body có class="role-admin" */
+body:not(.role-admin) label[for="tab-system"],
+body:not(.role-admin) #pane-system {
+    display: none !important;
+}

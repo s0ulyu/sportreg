@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - SportReg Realtime</title>
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="login.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons (Icons) -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-wrapper">
+            <!-- Header / Logo -->
+            <div class="login-header">
+                <div class="logo-icon">
+                    <i class='bx bx-run'></i>
+                </div>
+                <h1>SportReg</h1>
+                <p>Hệ thống đăng ký thi đấu Realtime</p>
+            </div>
+
+            <!-- Form -->
+            <form action="#" class="login-form">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <div class="input-field">
+                        <i class='bx bx-envelope'></i>
+                        <input type="email" id="email" placeholder="vidu@email.com" required>
+                    </div>
+                    <span class="error-message">Email không hợp lệ</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Mật khẩu</label>
+                    <div class="input-field">
+                        <i class='bx bx-lock-alt'></i>
+                        <input type="password" id="password" placeholder="Nhập mật khẩu" required>
+                    </div>
+                    <span class="error-message">Mật khẩu phải có ít nhất 6 ký tự</span>
+                </div>
+
+                <div class="form-actions">
+                    <a href="#" class="forgot-pass">Quên mật khẩu?</a>
+                </div>
+
+                <button type="submit" class="btn-login">Đăng nhập</button>
+
+                <div class="register-link">
+                    Chưa có tài khoản? <a href="#">Đăng ký ngay</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.querySelector('.login-form');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Ngăn form reload trang mặc định
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Gọi API lên Server
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Thành công: Lưu user vào localStorage và chuyển trang
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    window.location.href = '/dashboard/dashboard.html';
+                } else {
+                    // Thất bại
+                    alert(data.message || 'Đăng nhập thất bại!');
+                }
+            } catch (error) {
+                console.error('Lỗi:', error);
+                alert('Không thể kết nối đến Server.');
+            }
+        });
+    </script>
+</body>
+</html>

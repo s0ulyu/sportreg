@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý giải đấu - SportReg</title>
+    <link rel="stylesheet" href="tournaments.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <!-- Checkbox ẩn cho mobile menu -->
+    <input type="checkbox" id="nav-toggle">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
+        </div>
+
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="#"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a>
+                </li>
+                <li>
+                    <a href="#" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class='bx bx-user'></i> <span>Người dùng</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class='bx bx-cog'></i> <span>Cài đặt</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle"><i class='bx bx-menu'></i></label>
+                Giải đấu
+            </h2>
+            <div class="user-wrapper">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" width="40px" height="40px" alt="Avatar">
+                <div>
+                    <h4>Admin User</h4>
+                    <small>Quản trị viên</small>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Danh sách giải đấu</h1>
+                <button class="btn-create"><i class='bx bx-plus'></i> Tạo giải đấu</button>
+            </div>
+
+            <!-- Toolbar: Search & Filter -->
+            <div class="toolbar">
+                <div class="search-wrapper">
+                    <i class='bx bx-search'></i>
+                    <input type="search" placeholder="Tìm kiếm theo tên giải...">
+                </div>
+                <div class="filter-wrapper">
+                    <select>
+                        <option value="all">Tất cả trạng thái</option>
+                        <option value="open">Đang mở đăng ký</option>
+                        <option value="upcoming">Sắp diễn ra</option>
+                        <option value="closed">Đã kết thúc</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table List -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên giải đấu</th>
+                            <th>Môn thi đấu</th>
+                            <th>Thời gian</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dữ liệu sẽ được load từ API -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <span>Hiển thị 1-4 trên 20 giải đấu</span>
+                <div class="pages">
+                    <button disabled><i class='bx bx-chevron-left'></i></button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button><i class='bx bx-chevron-right'></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // 1. Gọi API lấy danh sách giải đấu
+                const response = await fetch('/api/tournaments');
+                const tournaments = await response.json();
+                
+                const tbody = document.querySelector('tbody');
+                tbody.innerHTML = ''; // Xóa nội dung cũ (nếu có)
+
+                // 2. Duyệt qua từng giải đấu và tạo HTML
+                tournaments.forEach(t => {
+                    // Format ngày tháng (YYYY-MM-DD -> DD/MM/YYYY)
+                    const date = new Date(t.start_date).toLocaleDateString('vi-VN');
+
+                    // Xử lý hiển thị trạng thái (Badge màu)
+                    let badgeClass = '';
+                    let statusText = '';
+                    
+                    if (t.status === 'open') {
+                        badgeClass = 'success';
+                        statusText = 'Mở đăng ký';
+                    } else if (t.status === 'upcoming') {
+                        badgeClass = 'warning';
+                        statusText = 'Sắp mở';
+                    } else {
+                        badgeClass = 'danger';
+                        statusText = 'Đã đóng';
+                    }
+
+                    // Tạo dòng tr
+                    const tr = `
+                        <tr>
+                            <td>
+                                <div class="tournament-info">
+                                    <div class="t-name">${t.name}</div>
+                                    <small>${t.location}</small>
+                                </div>
+                            </td>
+                            <td>${t.sport_type}</td>
+                            <td>${date}</td>
+                            <td><span class="badge ${badgeClass}">${statusText}</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn-action edit" title="Sửa"><i class='bx bx-edit-alt'></i></button>
+                                    <button class="btn-action delete" title="Xóa"><i class='bx bx-trash'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += tr;
+                });
+            } catch (error) {
+                console.error('Lỗi tải dữ liệu:', error);
+            }
+        });
+    </script>
+</body>
+</html>

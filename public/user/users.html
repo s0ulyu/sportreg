@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý người dùng - SportReg</title>
+    <link rel="stylesheet" href="users.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<!-- Giả lập quyền: class="role-admin" (hiển thị) hoặc "role-athlete" (ẩn) -->
+<body class="role-admin">
+
+    <input type="checkbox" id="nav-toggle">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="#"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
+                <li><a href="#"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
+                <li><a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a></li>
+                <li><a href="#"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
+                <li><a href="#" class="active"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
+                <li><a href="#"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle"><i class='bx bx-menu'></i></label>
+                Quản lý người dùng
+            </h2>
+            <div class="user-wrapper">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" width="40px" height="40px" alt="Avatar">
+                <div>
+                    <h4>Admin User</h4>
+                    <small>Quản trị viên</small>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Danh sách thành viên</h1>
+                <button class="btn-create"><i class='bx bx-user-plus'></i> Thêm mới</button>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="search-wrapper">
+                    <i class='bx bx-search'></i>
+                    <input type="search" placeholder="Tìm kiếm theo tên, email...">
+                </div>
+                <div class="filter-wrapper">
+                    <select>
+                        <option value="all">Tất cả vai trò</option>
+                        <option value="admin">Quản trị viên</option>
+                        <option value="athlete">Vận động viên</option>
+                        <option value="referee">Trọng tài</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Thành viên</th>
+                            <th>Email</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <img src="https://ui-avatars.com/api/?name=Nguyen+Van+A&background=0D8ABC&color=fff" alt="">
+                                    <div>
+                                        <h4>Nguyễn Văn A</h4>
+                                        <small>ID: #USR001</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>nguyenvana@gmail.com</td>
+                            <td>
+                                <select class="role-select athlete">
+                                    <option value="athlete" selected>Vận động viên</option>
+                                    <option value="admin">Quản trị viên</option>
+                                    <option value="referee">Trọng tài</option>
+                                </select>
+                            </td>
+                            <td><span class="status-dot active"></span> Hoạt động</td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn-action lock" title="Khoá tài khoản"><i class='bx bx-lock-open-alt'></i></button>
+                                    <button class="btn-action delete" title="Xóa"><i class='bx bx-trash'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <img src="https://ui-avatars.com/api/?name=Tran+Thi+B&background=ef4444&color=fff" alt="">
+                                    <div>
+                                        <h4>Trần Thị B</h4>
+                                        <small>ID: #USR002</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>tranthib@gmail.com</td>
+                            <td>
+                                <select class="role-select admin">
+                                    <option value="athlete">Vận động viên</option>
+                                    <option value="admin" selected>Quản trị viên</option>
+                                    <option value="referee">Trọng tài</option>
+                                </select>
+                            </td>
+                            <td><span class="status-dot inactive"></span> Đã khoá</td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn-action unlock" title="Mở khoá"><i class='bx bx-lock-alt'></i></button>
+                                    <button class="btn-action delete" title="Xóa"><i class='bx bx-trash'></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Thêm các dòng khác tương tự -->
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>

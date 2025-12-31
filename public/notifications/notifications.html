@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông báo - SportReg</title>
+    <link rel="stylesheet" href="notifications.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <input type="checkbox" id="nav-toggle">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="#"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
+                <li><a href="#"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
+                <li><a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a></li>
+                <li><a href="#"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
+                <li><a href="#"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
+                <li><a href="#"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle"><i class='bx bx-menu'></i></label>
+                Thông báo
+            </h2>
+            <div class="user-wrapper">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" width="40px" height="40px" alt="Avatar">
+                <div>
+                    <h4>Admin User</h4>
+                    <small>Quản trị viên</small>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="notif-header">
+                <h1>Thông báo của bạn <span class="badge-count">3</span></h1>
+                <button class="btn-mark-read"><i class='bx bx-check-double'></i> Đánh dấu tất cả đã đọc</button>
+            </div>
+
+            <div class="notif-container">
+                
+                <!-- Dữ liệu sẽ được load từ API -->
+            </div>
+
+            <!-- 
+                Empty State: Hiển thị khi không có thông báo.
+                Bỏ comment khối div.empty-state và comment khối div.notif-container ở trên để xem.
+            -->
+            <!-- <div class="empty-state">
+                <div class="empty-state-icon"><i class='bx bx-bell-off'></i></div>
+                <h2>Không có thông báo mới</h2>
+                <p>Tất cả thông báo của bạn sẽ được hiển thị ở đây.</p>
+            </div> -->
+
+            <div class="load-more">
+                <button>Xem thêm thông báo cũ</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const userStr = localStorage.getItem('currentUser');
+            if (!userStr) {
+                window.location.href = '/login/login.html';
+                return;
+            }
+            const user = JSON.parse(userStr);
+            const container = document.querySelector('.notif-container');
+            const badgeCount = document.querySelector('.badge-count');
+
+            try {
+                // Gọi API lấy danh sách thông báo
+                const response = await fetch(`/api/notifications/${user.id}`);
+                const notifications = await response.json();
+
+                container.innerHTML = ''; // Xóa nội dung cũ
+                badgeCount.textContent = notifications.length; // Cập nhật số lượng
+
+                if (notifications.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; padding: 20px;">Bạn chưa có thông báo nào.</p>';
+                    return;
+                }
+
+                notifications.forEach(notif => {
+                    const time = new Date(notif.created_at).toLocaleString('vi-VN');
+                    const html = `
+                        <div class="notif-card ${notif.is_read ? '' : 'unread'}">
+                            <div class="notif-icon info">
+                                <i class='bx bx-bell'></i>
+                            </div>
+                            <div class="notif-content">
+                                <div class="notif-title">
+                                    <h4>${notif.title}</h4>
+                                    ${notif.is_read ? '' : '<span class="dot"></span>'}
+                                </div>
+                                <p>${notif.message}</p>
+                                <span class="notif-time">${time}</span>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += html;
+                });
+            } catch (error) {
+                console.error('Lỗi tải thông báo:', error);
+            }
+        });
+    </script>
+</body>
+</html>

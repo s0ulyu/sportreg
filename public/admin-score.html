@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Cập nhật Tỉ số</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; max-width: 500px; margin: 0 auto; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        input { width: 100%; padding: 0.5rem; font-size: 1rem; box-sizing: border-box; }
+        button { width: 100%; padding: 1rem; background: #2563eb; color: white; border: none; font-size: 1.2rem; cursor: pointer; }
+        button:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+    <h1>Điều khiển Tỉ số</h1>
+    
+    <div class="form-group">
+        <label>ID Trận đấu (Match ID)</label>
+        <input type="number" id="matchId" value="1" placeholder="Nhập ID trận đấu">
+    </div>
+
+    <div class="form-group">
+        <label>Điểm Đội 1</label>
+        <input type="number" id="score1" value="0">
+    </div>
+
+    <div class="form-group">
+        <label>Điểm Đội 2</label>
+        <input type="number" id="score2" value="0">
+    </div>
+
+    <button id="btnUpdate">Cập nhật Tỉ số</button>
+
+    <script>
+        const btnUpdate = document.getElementById('btnUpdate');
+
+        btnUpdate.addEventListener('click', async () => {
+            const matchId = document.getElementById('matchId').value;
+            const score1 = document.getElementById('score1').value;
+            const score2 = document.getElementById('score2').value;
+
+            // Lấy thông tin user để gửi role lên server
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+
+            try {
+                const response = await fetch('/api/matches/update-score', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-role': user ? user.role : '' // Gửi role để vượt qua checkAdmin
+                    },
+                    body: JSON.stringify({ matchId, score1, score2 })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Đã cập nhật!');
+                } else {
+                    alert('Lỗi: ' + data.message);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Lỗi kết nối server');
+            }
+        });
+    </script>
+    <!-- Script Phân quyền & Bảo mật -->
+    <script src="/js/auth.js"></script>
+</body>
+</html>
