@@ -103,6 +103,21 @@ app.get('/api/tournaments', (req, res) => {
     });
 });
 
+// --- API Lấy chi tiết giải đấu ---
+app.get('/api/tournaments/:id', (req, res) => {
+    const sql = 'SELECT * FROM tournaments WHERE id = ?';
+    db.query(sql, [req.params.id], (err, results) => {
+        if (err) {
+            console.error('Lỗi MySQL:', err);
+            return res.status(500).json({ message: 'Lỗi Server' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Không tìm thấy giải đấu' });
+        }
+        res.json(results[0]);
+    });
+});
+
 // --- API Đăng ký thi đấu ---
 app.post('/api/register', (req, res) => {
     const { userId, tournamentId } = req.body;

@@ -11,7 +11,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <!-- Thêm class "role-admin" hoặc "role-athlete" vào body để giả lập quyền -->
-<body class="role-admin">
+<body>
 
     <!-- Checkbox ẩn để xử lý toggle menu trên mobile -->
     <input type="checkbox" id="nav-toggle">
@@ -25,22 +25,22 @@
         <div class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="#" class="active"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a>
+                    <a href="/dashboard/dashboard.html" class="active"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a>
+                    <a href="/tournaments/tournaments.html"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a>
                 </li>
                 <li>
                     <a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a>
+                    <a href="/live-status/live-status.html"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a>
                 </li>
                 <li class="menu-users">
-                    <a href="#"><i class='bx bx-user'></i> <span>Người dùng</span></a>
+                    <a href="/user/users.html"><i class='bx bx-user'></i> <span>Người dùng</span></a>
                 </li>
                 <li class="menu-settings">
-                    <a href="#"><i class='bx bx-cog'></i> <span>Cài đặt</span></a>
+                    <a href="/setting/settings.html"><i class='bx bx-cog'></i> <span>Cài đặt</span></a>
                 </li>
             </ul>
         </div>
@@ -62,7 +62,7 @@
                     <h4>Admin User</h4>
                     <small>Quản trị viên</small>
                 </div>
-                <div class="logout-icon">
+                <div class="logout-icon" style="cursor: pointer;">
                     <i class='bx bx-log-out-circle'></i>
                 </div>
             </div>
@@ -223,5 +223,7 @@
     </script>
     <!-- Script Phân quyền & Bảo mật -->
     <script src="/js/auth.js"></script>
+    <!-- Script Common (Logic chung) -->
+    <script src="/js/common.js"></script>
 </body>
 </html>

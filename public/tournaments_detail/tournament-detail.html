@@ -21,12 +21,12 @@
         </div>
         <div class="sidebar-menu">
             <ul>
-                <li><a href="#"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
-                <li><a href="#" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
+                <li><a href="/dashboard/dashboard.html"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
+                <li><a href="/tournaments/tournaments.html" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
                 <li><a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a></li>
-                <li><a href="#"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
-                <li><a href="#"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
-                <li><a href="#"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
+                <li><a href="/live-status/live-status.html"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
+                <li class="menu-users"><a href="/user/users.html"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
+                <li class="menu-settings"><a href="/setting/settings.html"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
             </ul>
         </div>
     </div>
@@ -151,47 +151,92 @@
     </div>
 
     <script>
-        const btnRegister = document.querySelector('.btn-register');
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Lấy ID từ URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const tournamentId = urlParams.get('id');
 
-        btnRegister.addEventListener('click', async () => {
-            // 1. Lấy thông tin user từ localStorage
-            const userStr = localStorage.getItem('currentUser');
-            
-            if (!userStr) {
-                alert('Vui lòng đăng nhập để thực hiện đăng ký!');
-                window.location.href = '/login/login.html'; // Chuyển hướng về trang đăng nhập
+            if (!tournamentId) {
+                alert('Không tìm thấy ID giải đấu!');
+                window.location.href = '/tournaments/tournaments.html';
                 return;
             }
 
-            const user = JSON.parse(userStr);
-            const userId = user.id;
-            const tournamentId = 1; // Hardcode ID giải đấu theo yêu cầu
-
+            // 2. Gọi API lấy chi tiết giải đấu
             try {
-                // 2. Gọi API đăng ký
-                const response = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, tournamentId })
-                });
+                const response = await fetch(`/api/tournaments/${tournamentId}`);
+                if (!response.ok) throw new Error('Lỗi tải thông tin');
+                const t = await response.json();
 
-                const data = await response.json();
-
-                if (response.ok && data.success) {
-                    alert(data.message);
-                    // Cập nhật giao diện nút bấm
-                    btnRegister.textContent = 'Đang chờ duyệt';
-                    btnRegister.disabled = true;
-                    btnRegister.style.opacity = '0.6';
-                    btnRegister.style.cursor = 'not-allowed';
+                // 3. Điền dữ liệu vào giao diện
+                document.querySelector('.hero-content h1').textContent = t.name;
+                
+                // Cập nhật Badge trạng thái
+                const badge = document.querySelector('.hero-content .badge');
+                if (t.status === 'open') {
+                    badge.className = 'badge success';
+                    badge.textContent = 'Đang mở đăng ký';
+                } else if (t.status === 'upcoming') {
+                    badge.className = 'badge warning';
+                    badge.textContent = 'Sắp mở';
                 } else {
-                    alert(data.message || 'Đăng ký thất bại');
+                    badge.className = 'badge danger';
+                    badge.textContent = 'Đã đóng';
                 }
+
+                // Cập nhật thông tin Meta (Địa điểm, Thời gian, Môn thi)
+                const startDate = new Date(t.start_date).toLocaleDateString('vi-VN');
+                const endDate = new Date(t.end_date).toLocaleDateString('vi-VN');
+                const metaContainer = document.querySelector('.hero-meta');
+                metaContainer.innerHTML = `
+                    <span><i class='bx bx-map'></i> ${t.location}</span>
+                    <span><i class='bx bx-calendar'></i> ${startDate} - ${endDate}</span>
+                    <span><i class='bx bx-run'></i> ${t.sport_type}</span>
+                `;
+
             } catch (error) {
-                console.error('Lỗi:', error);
-                alert('Không thể kết nối đến Server.');
+                console.error(error);
+                alert('Không thể tải thông tin giải đấu.');
             }
+
+            // 4. Xử lý sự kiện Đăng ký
+            const btnRegister = document.querySelector('.btn-register');
+            btnRegister.addEventListener('click', async () => {
+                const userStr = localStorage.getItem('currentUser');
+                if (!userStr) {
+                    alert('Vui lòng đăng nhập để thực hiện đăng ký!');
+                    window.location.href = '/login/login.html';
+                    return;
+                }
+
+                const user = JSON.parse(userStr);
+                
+                try {
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId: user.id, tournamentId: tournamentId })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        alert(data.message);
+                        btnRegister.textContent = 'Đang chờ duyệt';
+                        btnRegister.disabled = true;
+                        btnRegister.style.opacity = '0.6';
+                        btnRegister.style.cursor = 'not-allowed';
+                    } else {
+                        alert(data.message || 'Đăng ký thất bại');
+                    }
+                } catch (error) {
+                    console.error('Lỗi:', error);
+                    alert('Không thể kết nối đến Server.');
+                }
+            });
         });
     </script>
+    <!-- Script Common (Logic chung) -->
+    <script src="/js/common.js"></script>
 </body>
 </html>

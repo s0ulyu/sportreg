@@ -24,22 +24,22 @@
         <div class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="#"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a>
+                    <a href="/dashboard/dashboard.html"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a>
                 </li>
                 <li>
-                    <a href="#" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a>
+                    <a href="/tournaments/tournaments.html" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a>
                 </li>
                 <li>
                     <a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a>
+                    <a href="/live-status/live-status.html"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a>
                 </li>
-                <li>
-                    <a href="#"><i class='bx bx-user'></i> <span>Người dùng</span></a>
+                <li class="menu-users">
+                    <a href="/user/users.html"><i class='bx bx-user'></i> <span>Người dùng</span></a>
                 </li>
-                <li>
-                    <a href="#"><i class='bx bx-cog'></i> <span>Cài đặt</span></a>
+                <li class="menu-settings">
+                    <a href="/setting/settings.html"><i class='bx bx-cog'></i> <span>Cài đặt</span></a>
                 </li>
             </ul>
         </div>
@@ -151,7 +151,9 @@
                         <tr>
                             <td>
                                 <div class="tournament-info">
-                                    <div class="t-name">${t.name}</div>
+                                    <div class="t-name">
+                                        <a href="/tournaments_detail/tournament-detail.html?id=${t.id}" style="text-decoration: none; color: inherit; font-weight: 600;">${t.name}</a>
+                                    </div>
                                     <small>${t.location}</small>
                                 </div>
                             </td>
@@ -160,6 +162,7 @@
                             <td><span class="badge ${badgeClass}">${statusText}</span></td>
                             <td>
                                 <div class="actions">
+                                    <a href="/tournaments_detail/tournament-detail.html?id=${t.id}" class="btn-action view" title="Xem" style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none; color: #1e293b;"><i class='bx bx-show'></i></a>
                                     <button class="btn-action edit" title="Sửa"><i class='bx bx-edit-alt'></i></button>
                                     <button class="btn-action delete" title="Xóa"><i class='bx bx-trash'></i></button>
                                 </div>
@@ -173,5 +176,7 @@
             }
         });
     </script>
+    <!-- Script Common (Logic chung) -->
+    <script src="/js/common.js"></script>
 </body>
 </html>
