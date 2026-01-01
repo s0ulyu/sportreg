@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký thi đấu - SportReg</title>
+    <link rel="stylesheet" href="/dashboard/dashboard.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* CSS riêng cho trang đăng ký */
+        .tournaments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .tournament-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #f1f5f9;
+        }
+        .tournament-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #1e293b;
+            font-weight: 600;
+        }
+        .tournament-card p {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tournament-card .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            width: fit-content;
+        }
+        .status-badge.open { background: #dcfce7; color: #166534; }
+        .status-badge.closed { background: #fee2e2; color: #991b1b; }
+        .status-badge.upcoming { background: #fef3c7; color: #92400e; }
+
+        .btn-register {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 500;
+            transition: background 0.3s;
+            text-align: center;
+        }
+        .btn-register:hover { background: #1d4ed8; }
+        .btn-register:disabled { background: #cbd5e1; cursor: not-allowed; color: #64748b; }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="nav-toggle">
+    
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle"><i class='bx bx-menu'></i></label>
+                Đăng ký thi đấu
+            </h2>
+            <div class="user-wrapper">
+                <img src="" width="40px" height="40px" alt="Avatar">
+                <div>
+                    <h4>Loading...</h4>
+                    <small>...</small>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="page-header">
+                <h1>Các giải đấu hiện có</h1>
+            </div>
+            
+            <!-- Danh sách giải đấu sẽ được JS render vào đây -->
+            <div class="tournaments-grid" id="tournaments-list">
+                <p>Đang tải danh sách...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script xử lý logic đăng ký -->
+    <script>
+        // Logic sẽ được viết ở file JS riêng hoặc inline tạm thời để test
+        // Để code gọn gàng, tôi sẽ nhúng logic fetch API ngay dưới đây
+    </script>
+    
+    <!-- Script Common (Logic chung) -->
+    <script src="/js/common.js"></script>
+    <!-- Script riêng cho trang Register -->
+    <script src="register.js"></script>
+</body>
+</html>

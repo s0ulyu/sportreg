@@ -15,21 +15,7 @@
     <input type="checkbox" id="nav-toggle">
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
-        </div>
-        <div class="sidebar-menu">
-            <ul>
-                <li><a href="/dashboard/dashboard.html"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
-                <li><a href="/tournaments/tournaments.html"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
-                <li><a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a></li>
-                <li><a href="/live-status/live-status.html" class="active"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
-                <li class="menu-users"><a href="/user/users.html"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
-                <li class="menu-settings"><a href="/setting/settings.html"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
-            </ul>
-        </div>
-    </div>
+    <div id="sidebar-container"></div>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -39,10 +25,10 @@
                 Trực tiếp thi đấu
             </h2>
             <div class="user-wrapper">
-                <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" width="40px" height="40px" alt="Avatar">
+                <img src="" width="40px" height="40px" alt="Avatar">
                 <div>
-                    <h4>Admin User</h4>
-                    <small>Quản trị viên</small>
+                    <h4>Loading...</h4>
+                    <small>...</small>
                 </div>
             </div>
         </header>
@@ -56,89 +42,8 @@
             </div>
 
             <!-- Grid danh sách trận đấu -->
-            <div class="live-grid">
-                
-                <!-- Card 1: Bóng đá (Live) -->
-                <div class="match-card live-active" id="match-1">
-                    <div class="card-top">
-                        <div class="sport-tag"><i class='bx bx-football'></i> Bóng đá</div>
-                        <span class="status-badge live">LIVE 34'</span>
-                    </div>
-                    <div class="match-info">
-                        <div class="team">
-                            <div class="team-logo" style="background: #ef4444;">HC</div>
-                            <span class="team-name">Hải Châu FC</span>
-                        </div>
-                        <div class="score-box">
-                            <span class="score score-team1">2</span>
-                            <span class="divider">-</span>
-                            <span class="score score-team2">1</span>
-                        </div>
-                        <div class="team">
-                            <div class="team-logo" style="background: #3b82f6;">ST</div>
-                            <span class="team-name">Sơn Trà FC</span>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <span><i class='bx bx-map'></i> Sân A1</span>
-                        <span>Bảng B - Vòng loại</span>
-                    </div>
-                </div>
-
-                <!-- Card 2: Tennis (Live) -->
-                <div class="match-card live-active">
-                    <div class="card-top">
-                        <div class="sport-tag"><i class='bx bx-tennis-ball'></i> Tennis</div>
-                        <span class="status-badge live">LIVE Set 2</span>
-                    </div>
-                    <div class="match-info">
-                        <div class="team">
-                            <div class="team-logo" style="background: #10b981;">MA</div>
-                            <span class="team-name">Minh Anh</span>
-                        </div>
-                        <div class="score-box">
-                            <span class="score">6</span>
-                            <span class="divider">-</span>
-                            <span class="score">4</span>
-                        </div>
-                        <div class="team">
-                            <div class="team-logo" style="background: #f59e0b;">QA</div>
-                            <span class="team-name">Quốc Anh</span>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <span><i class='bx bx-map'></i> Sân Tennis 02</span>
-                        <span>Chung kết đơn nam</span>
-                    </div>
-                </div>
-
-                <!-- Card 3: Cầu lông (Sắp diễn ra) -->
-                <div class="match-card">
-                    <div class="card-top">
-                        <div class="sport-tag"><i class='bx bx-ball'></i> Cầu lông</div>
-                        <span class="status-badge upcoming">14:30</span>
-                    </div>
-                    <div class="match-info">
-                        <div class="team">
-                            <div class="team-logo" style="background: #6366f1;">T1</div>
-                            <span class="team-name">Team 1</span>
-                        </div>
-                        <div class="score-box upcoming">
-                            <span>VS</span>
-                        </div>
-                        <div class="team">
-                            <div class="team-logo" style="background: #ec4899;">T2</div>
-                            <span class="team-name">Team 2</span>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <span><i class='bx bx-map'></i> Nhà thi đấu</span>
-                        <span>Đôi nam nữ</span>
-                    </div>
-                </div>
-
-                <!-- Thêm các card khác tương tự -->
-
+            <div class="live-grid" id="live-matches-container">
+                <p style="text-align:center; width:100%; color:#666;">Đang tải dữ liệu trực tiếp...</p>
             </div>
         </main>
     </div>
@@ -149,20 +54,76 @@
         // 1. Kết nối đến Server
         const socket = io();
 
-        // 2. Lắng nghe sự kiện 'score_updated'
+        // 2. Hàm load dữ liệu ban đầu
+        async function loadLiveMatches() {
+            try {
+                const res = await fetch('/api/matches/live');
+                const matches = await res.json();
+                const container = document.getElementById('live-matches-container');
+                
+                container.innerHTML = '';
+                if (matches.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; width:100%;">Hiện không có trận đấu nào đang diễn ra.</p>';
+                    return;
+                }
+
+                matches.forEach(m => {
+                    const isLive = m.status === 'live';
+                    const statusClass = isLive ? 'live' : 'upcoming';
+                    const statusText = isLive ? 'LIVE' : (m.start_time ? new Date(m.start_time).toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'}) : 'Sắp đấu');
+                    const activeClass = isLive ? 'live-active' : '';
+                    
+                    const scoreDisplay = isLive 
+                        ? `<span class="score score-team1">${m.score1 || 0}</span><span class="divider">-</span><span class="score score-team2">${m.score2 || 0}</span>`
+                        : `<span style="font-size:1.5rem; font-weight:bold; color:#64748b;">VS</span>`;
+
+                    const html = `
+                        <div class="match-card ${activeClass}" id="match-${m.id}">
+                            <div class="card-top">
+                                <div class="sport-tag"><i class='bx bx-trophy'></i> ${m.sport_type}</div>
+                                <span class="status-badge ${statusClass}">${statusText}</span>
+                            </div>
+                            <div class="match-info">
+                                <div class="team">
+                                    <div class="team-logo" style="background: #3b82f6;">${m.team1.charAt(0)}</div>
+                                    <span class="team-name">${m.team1}</span>
+                                </div>
+                                <div class="score-box">
+                                    ${scoreDisplay}
+                                </div>
+                                <div class="team">
+                                    <div class="team-logo" style="background: #ef4444;">${m.team2.charAt(0)}</div>
+                                    <span class="team-name">${m.team2}</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span><i class='bx bx-map'></i> ${m.venue || 'Chưa xếp sân'}</span>
+                                <span>${m.round}</span>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += html;
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // Gọi hàm load khi trang tải xong
+        loadLiveMatches();
+
+        // 3. Lắng nghe sự kiện 'score_updated' để cập nhật Realtime
         socket.on('score_updated', (data) => {
             console.log('Nhận dữ liệu mới:', data);
             
-            // Tìm thẻ HTML tương ứng với matchId (ví dụ: match-1)
+            // Tìm thẻ HTML tương ứng với matchId
             const matchCard = document.getElementById(`match-${data.matchId}`);
             if (matchCard) {
-                // Cập nhật con số trên màn hình
-                matchCard.querySelector('.score-team1').textContent = data.score1;
-                matchCard.querySelector('.score-team2').textContent = data.score2;
-                
-                // Hiệu ứng nháy màu để báo hiệu (Optional)
-                matchCard.style.borderColor = '#ef4444';
-                setTimeout(() => matchCard.style.borderColor = 'transparent', 500);
+                // Nếu thẻ đã tồn tại, reload lại toàn bộ danh sách để cập nhật đúng trạng thái/thứ tự
+                loadLiveMatches();
+            } else {
+                // Nếu là trận mới chuyển sang live, cũng reload
+                loadLiveMatches();
             }
         });
     </script>

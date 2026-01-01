@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Kiểm tra đăng nhập
-    const userStr = localStorage.getItem('currentUser');
+    const userStr = localStorage.getItem('user');
     if (!userStr) {
         // Nếu chưa đăng nhập, đá về trang login
         window.location.href = '/login/login.html';

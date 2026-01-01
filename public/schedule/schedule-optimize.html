@@ -16,21 +16,7 @@
     <input type="checkbox" id="nav-toggle">
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
-        </div>
-        <div class="sidebar-menu">
-            <ul>
-                <li><a href="/dashboard/dashboard.html"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
-                <li><a href="/tournaments/tournaments.html" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
-                <li><a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a></li>
-                <li><a href="/live-status/live-status.html"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
-                <li class="menu-users"><a href="/user/users.html"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
-                <li class="menu-settings"><a href="/setting/settings.html"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
-            </ul>
-        </div>
-    </div>
+    <div id="sidebar-container"></div>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -224,8 +210,6 @@
         // Chạy kiểm tra ngay khi tải trang để cập nhật trạng thái thực tế
         checkConflicts();
     </script>
-    <!-- Script Phân quyền & Bảo mật -->
-    <script src="/js/auth.js"></script>
     <!-- Script Common (Logic chung) -->
     <script src="/js/common.js"></script>
 </body>

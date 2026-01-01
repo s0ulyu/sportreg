@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký - SportReg Realtime</title>
+    <!-- Link CSS (Dùng chung với Login) -->
+    <link rel="stylesheet" href="login.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons (Icons) -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-wrapper">
+            <!-- Header / Logo -->
+            <div class="login-header">
+                <div class="logo-icon">
+                    <i class='bx bx-user-plus'></i>
+                </div>
+                <h1>Đăng ký</h1>
+                <p>Tạo tài khoản thành viên mới</p>
+            </div>
+
+            <!-- Thông báo lỗi (Thêm mới) -->
+            <div id="error-msg" class="error-msg" style="display: none; color: #ef4444; background: #fee2e2; padding: 10px; border-radius: 6px; margin-bottom: 15px; text-align: center;"></div>
+
+            <!-- Form -->
+            <form class="signup-form">
+                <div class="input-group">
+                    <label for="fullname">Họ và tên</label>
+                    <div class="input-field">
+                        <i class='bx bx-user'></i>
+                        <input type="text" id="fullname" placeholder="Nguyễn Văn A" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <div class="input-field">
+                        <i class='bx bx-envelope'></i>
+                        <input type="email" id="email" placeholder="vidu@email.com" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Mật khẩu</label>
+                    <div class="input-field">
+                        <i class='bx bx-lock-alt'></i>
+                        <input type="password" id="password" placeholder="Tạo mật khẩu" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">Đăng ký</button>
+
+                <div class="register-link">
+                    Đã có tài khoản? <a href="login.html">Đăng nhập</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const signupForm = document.querySelector('.signup-form');
+        const errorMsg = document.getElementById('error-msg');
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const full_name = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Reset lỗi
+            if (errorMsg) errorMsg.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ full_name, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                    window.location.href = 'login.html';
+                } else {
+                    if (errorMsg) {
+                        errorMsg.textContent = data.message || 'Đăng ký thất bại';
+                        errorMsg.style.display = 'block';
+                    } else {
+                        alert(data.message || 'Đăng ký thất bại');
+                    }
+                }
+            } catch (error) {
+                console.error('Lỗi:', error);
+                if (errorMsg) {
+                    errorMsg.textContent = 'Lỗi kết nối đến Server';
+                    errorMsg.style.display = 'block';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

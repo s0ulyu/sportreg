@@ -9,6 +9,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* CSS cho Modal Tạo giải đấu */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fff; margin: 2% auto; padding: 25px; border-radius: 8px; width: 700px; max-width: 90%; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #666; }
+        .modal h2 { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; color: #1e293b; }
+        
+        /* Form Layout */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group.full-width { grid-column: span 2; }
+        .form-group label { font-size: 0.9rem; font-weight: 600; color: #333; display: block; margin-bottom: 5px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: inherit; font-size: 0.95rem; }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        
+        /* Preview Image */
+        #banner_preview { width: 100%; height: 150px; object-fit: cover; border-radius: 6px; margin-top: 10px; display: none; background-color: #f1f5f9; border: 1px dashed #cbd5e1; }
+
+        /* Buttons */
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; }
+        .btn-submit { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .btn-submit:hover { background: #1d4ed8; }
+        .btn-cancel { padding: 10px 20px; background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .btn-cancel:hover { background: #e2e8f0; }
+    </style>
 </head>
 <body>
 
@@ -16,34 +41,7 @@
     <input type="checkbox" id="nav-toggle">
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
-        </div>
-
-        <div class="sidebar-menu">
-            <ul>
-                <li>
-                    <a href="/dashboard/dashboard.html"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a>
-                </li>
-                <li>
-                    <a href="/tournaments/tournaments.html" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a>
-                </li>
-                <li>
-                    <a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a>
-                </li>
-                <li>
-                    <a href="/live-status/live-status.html"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a>
-                </li>
-                <li class="menu-users">
-                    <a href="/user/users.html"><i class='bx bx-user'></i> <span>Người dùng</span></a>
-                </li>
-                <li class="menu-settings">
-                    <a href="/setting/settings.html"><i class='bx bx-cog'></i> <span>Cài đặt</span></a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <div id="sidebar-container"></div>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -53,10 +51,10 @@
                 Giải đấu
             </h2>
             <div class="user-wrapper">
-                <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" width="40px" height="40px" alt="Avatar">
+                <img src="" width="40px" height="40px" alt="Avatar">
                 <div>
-                    <h4>Admin User</h4>
-                    <small>Quản trị viên</small>
+                    <h4>Loading...</h4>
+                    <small>...</small>
                 </div>
             </div>
         </header>
@@ -116,17 +114,165 @@
         </main>
     </div>
 
+    <!-- Modal Tạo giải đấu -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Tạo giải đấu mới</h2>
+            <form id="createForm">
+                <input type="hidden" id="edit_id"> <!-- Input ẩn lưu ID khi sửa -->
+                <!-- Nhóm 1: Thông tin chung -->
+                <div class="form-group full-width">
+                    <label>Tên giải đấu <span style="color:red">*</span></label>
+                    <input type="text" id="name" placeholder="Ví dụ: Giải Bóng Đá Mùa Hè 2024" required>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Môn thi đấu <span style="color:red">*</span></label>
+                        <input type="text" id="sport_type" placeholder="VD: Bóng đá, Cầu lông..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Địa điểm <span style="color:red">*</span></label>
+                        <input type="text" id="location" placeholder="VD: Sân vận động Quân khu 7" required>
+                    </div>
+                </div>
+
+                <!-- Nhóm 2: Thời gian -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Ngày bắt đầu <span style="color:red">*</span></label>
+                        <input type="date" id="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày kết thúc <span style="color:red">*</span></label>
+                        <input type="date" id="end_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hạn đăng ký</label>
+                        <input type="date" id="registration_deadline">
+                    </div>
+                    <div class="form-group">
+                        <label>Số lượng tối đa</label>
+                        <input type="number" id="max_participants" placeholder="VD: 32">
+                    </div>
+                </div>
+
+                <!-- Nhóm 3: Chi tiết & Ảnh -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Phí tham gia (VNĐ)</label>
+                        <input type="number" id="fee" placeholder="0 = Miễn phí">
+                    </div>
+                    <div class="form-group">
+                        <label>URL Ảnh bìa</label>
+                        <input type="url" id="banner_url" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>Thông tin BTC (Liên hệ)</label>
+                        <input type="text" id="contact_info" placeholder="VD: Sở TDTT - 0905xxxxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>Trạng thái giải đấu</label>
+                        <select id="status_select">
+                            <option value="open" selected>Mở đăng ký ngay</option>
+                            <option value="upcoming">Sắp diễn ra (Chưa mở)</option>
+                            <option value="ongoing">Đang diễn ra</option>
+                            <option value="closed">Đã kết thúc</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Preview Ảnh -->
+                <div class="form-group full-width">
+                    <img id="banner_preview" src="" alt="Preview Ảnh Bìa">
+                </div>
+
+                <!-- Nhóm 4: Nội dung -->
+                <div class="form-group full-width">
+                    <label>Giới thiệu giải đấu</label>
+                    <textarea id="description" placeholder="Nhập mô tả chi tiết, quy định, giải thưởng..."></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="btnCancel">Hủy bỏ</button>
+                    <button type="submit" class="btn-submit">Lưu giải đấu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                // 1. Gọi API lấy danh sách giải đấu
+            // --- KHỞI TẠO BIẾN ---
+            const modal = document.getElementById('createModal');
+            const btnCreate = document.querySelector('.btn-create');
+            const spanClose = document.querySelector('.close');
+            const createForm = document.getElementById('createForm');
+            const btnCancel = document.getElementById('btnCancel');
+            const bannerInput = document.getElementById('banner_url');
+            const bannerPreview = document.getElementById('banner_preview');
+            const modalTitle = document.querySelector('.modal h2');
+            const submitBtn = document.querySelector('.btn-submit');
+            
+            // Lấy thông tin user từ localStorage
+            const userStr = localStorage.getItem('user');
+            const user = userStr ? JSON.parse(userStr) : {};
+            const isAdmin = user.role === 'admin';
+
+            // --- 1. PHÂN QUYỀN (Ẩn nút Tạo nếu không phải Admin) ---
+            if (!isAdmin && btnCreate) {
+                btnCreate.style.display = 'none';
+            }
+
+            // --- 2. XỬ LÝ MODAL ---
+            if (btnCreate) {
+                btnCreate.onclick = () => {
+                    resetForm();
+                    modalTitle.textContent = "Tạo giải đấu mới";
+                    submitBtn.textContent = "Lưu giải đấu";
+                    modal.style.display = "block";
+                };
+            }
+            if (spanClose) {
+                spanClose.onclick = () => modal.style.display = "none";
+            }
+            if (btnCancel) {
+                btnCancel.onclick = () => modal.style.display = "none";
+            }
+            
+            function resetForm() {
+                createForm.reset();
+                document.getElementById('edit_id').value = '';
+                bannerPreview.style.display = 'none';
+                bannerPreview.src = '';
+            }
+            window.onclick = (event) => {
+                if (event.target == modal) modal.style.display = "none";
+            }
+
+            // --- 2.1 PREVIEW ẢNH ---
+            if (bannerInput) {
+                bannerInput.addEventListener('input', () => {
+                    const url = bannerInput.value.trim();
+                    if (url) {
+                        bannerPreview.src = url;
+                        bannerPreview.style.display = 'block';
+                    } else {
+                        bannerPreview.style.display = 'none';
+                    }
+                });
+            }
+
+            // --- 3. LOAD DANH SÁCH GIẢI ĐẤU ---
+            async function loadTournaments() {
+                try {
                 const response = await fetch('/api/tournaments');
                 const tournaments = await response.json();
                 
                 const tbody = document.querySelector('tbody');
                 tbody.innerHTML = ''; // Xóa nội dung cũ (nếu có)
 
-                // 2. Duyệt qua từng giải đấu và tạo HTML
                 tournaments.forEach(t => {
                     // Format ngày tháng (YYYY-MM-DD -> DD/MM/YYYY)
                     const date = new Date(t.start_date).toLocaleDateString('vi-VN');
@@ -141,9 +287,21 @@
                     } else if (t.status === 'upcoming') {
                         badgeClass = 'warning';
                         statusText = 'Sắp mở';
+                    } else if (t.status === 'ongoing') {
+                        badgeClass = 'info'; // Cần thêm CSS cho class này nếu chưa có, hoặc dùng tạm warning
+                        statusText = 'Đang diễn ra';
                     } else {
                         badgeClass = 'danger';
                         statusText = 'Đã đóng';
+                    }
+
+                    // Phân quyền nút Sửa/Xóa (Chỉ Admin mới thấy)
+                    let actionButtons = '';
+                    if (isAdmin) {
+                        actionButtons = `
+                            <button class="btn-action edit" title="Sửa" onclick="editTournament(${t.id})"><i class='bx bx-edit-alt'></i></button>
+                            <button class="btn-action delete" title="Xóa" onclick="deleteTournament(${t.id})"><i class='bx bx-trash'></i></button>
+                        `;
                     }
 
                     // Tạo dòng tr
@@ -163,16 +321,134 @@
                             <td>
                                 <div class="actions">
                                     <a href="/tournaments_detail/tournament-detail.html?id=${t.id}" class="btn-action view" title="Xem" style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none; color: #1e293b;"><i class='bx bx-show'></i></a>
-                                    <button class="btn-action edit" title="Sửa"><i class='bx bx-edit-alt'></i></button>
-                                    <button class="btn-action delete" title="Xóa"><i class='bx bx-trash'></i></button>
+                                    ${actionButtons}
                                 </div>
                             </td>
                         </tr>
                     `;
                     tbody.innerHTML += tr;
                 });
-            } catch (error) {
-                console.error('Lỗi tải dữ liệu:', error);
+                } catch (error) {
+                    console.error('Lỗi tải dữ liệu:', error);
+                }
+            }
+
+            // Gọi hàm load lần đầu
+            loadTournaments();
+
+            // --- 4. XỬ LÝ SỬA GIẢI ĐẤU ---
+            window.editTournament = async (id) => {
+                try {
+                    const res = await fetch(`/api/tournaments/${id}`);
+                    const t = await res.json();
+
+                    // Điền dữ liệu vào form
+                    document.getElementById('edit_id').value = t.id;
+                    document.getElementById('name').value = t.name;
+                    document.getElementById('sport_type').value = t.sport_type;
+                    document.getElementById('location').value = t.location;
+                    document.getElementById('start_date').value = t.start_date ? t.start_date.split('T')[0] : '';
+                    document.getElementById('end_date').value = t.end_date ? t.end_date.split('T')[0] : '';
+                    document.getElementById('registration_deadline').value = t.registration_deadline ? t.registration_deadline.split('T')[0] : '';
+                    document.getElementById('max_participants').value = t.max_participants;
+                    document.getElementById('fee').value = t.fee;
+                    document.getElementById('banner_url').value = t.banner_url;
+                    document.getElementById('contact_info').value = t.contact_info;
+                    document.getElementById('description').value = t.description;
+                    document.getElementById('status_select').value = t.status;
+
+                    // Preview ảnh
+                    if (t.banner_url) {
+                        bannerPreview.src = t.banner_url;
+                        bannerPreview.style.display = 'block';
+                    }
+
+                    // Đổi tiêu đề Modal
+                    modalTitle.textContent = "Cập nhật giải đấu";
+                    submitBtn.textContent = "Lưu thay đổi";
+                    modal.style.display = "block";
+
+                } catch (err) {
+                    console.error(err);
+                    alert('Không thể tải thông tin giải đấu');
+                }
+            };
+
+            // --- 5. XỬ LÝ SUBMIT FORM (TẠO MỚI HOẶC CẬP NHẬT) ---
+            createForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const editId = document.getElementById('edit_id').value;
+                
+                const payload = {
+                    name: document.getElementById('name').value,
+                    sport_type: document.getElementById('sport_type').value,
+                    start_date: document.getElementById('start_date').value,
+                    end_date: document.getElementById('end_date').value,
+                    location: document.getElementById('location').value,
+                    status: document.getElementById('status_select').value, // Lấy từ select
+                    // Các trường mới
+                    registration_deadline: document.getElementById('registration_deadline').value,
+                    max_participants: document.getElementById('max_participants').value,
+                    fee: document.getElementById('fee').value,
+                    banner_url: document.getElementById('banner_url').value,
+                    description: document.getElementById('description').value,
+                    contact_info: document.getElementById('contact_info').value
+                };
+
+                // Xác định URL và Method
+                const url = editId ? `/api/tournaments/${editId}` : '/api/tournaments';
+                const method = editId ? 'PUT' : 'POST';
+
+                try {
+                    const res = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-role': user.role // Gửi role để Middleware checkAdmin
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (res.ok) {
+                        alert(editId ? 'Cập nhật thành công!' : 'Tạo giải đấu thành công!');
+                        modal.style.display = "none";
+                        resetForm();
+                        loadTournaments(); // Load lại bảng
+                    } else {
+                        const data = await res.json();
+                        alert(data.message || 'Lỗi khi tạo');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Lỗi kết nối server');
+                }
+            });
+
+            // --- 6. XỬ LÝ XÓA (Global Function để gọi từ HTML string) ---
+            window.deleteTournament = async (id) => {
+                if (!confirm('Bạn có chắc chắn muốn xóa giải đấu này? Hành động này không thể hoàn tác.')) return;
+
+                try {
+                    const res = await fetch(`/api/tournaments/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-role': user.role // Gửi role để Middleware checkAdmin
+                        }
+                    });
+
+                    if (res.ok) {
+                        alert('Đã xóa thành công');
+                        loadTournaments(); // Load lại bảng
+                    } else {
+                        const data = await res.json();
+                        alert(data.message || 'Lỗi khi xóa');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Lỗi kết nối server');
+                }
             }
         });
     </script>

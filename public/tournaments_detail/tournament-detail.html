@@ -9,27 +9,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* CSS cho Modal Edit Match */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fff; margin: 5% auto; padding: 25px; border-radius: 8px; width: 500px; max-width: 90%; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #666; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .btn-save-match { width: 100%; padding: 10px; background: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        .btn-save-match:hover { background: #1d4ed8; }
+        .score-inputs { display: flex; gap: 10px; }
+        .score-inputs div { flex: 1; }
+
+        /* CSS cho Bảng xếp hạng */
+        .standings-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .standings-table th, .standings-table td { padding: 10px; text-align: center; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        .standings-table th { background: #f8fafc; font-weight: 600; color: #475569; }
+        .standings-table tr:first-child td { font-weight: bold; color: #2563eb; } /* Top 1 */
+    </style>
 </head>
 <body>
 
     <input type="checkbox" id="nav-toggle">
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
-        </div>
-        <div class="sidebar-menu">
-            <ul>
-                <li><a href="/dashboard/dashboard.html"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
-                <li><a href="/tournaments/tournaments.html" class="active"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
-                <li><a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a></li>
-                <li><a href="/live-status/live-status.html"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
-                <li class="menu-users"><a href="/user/users.html"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
-                <li class="menu-settings"><a href="/setting/settings.html"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
-            </ul>
-        </div>
-    </div>
+    <div id="sidebar-container"></div>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -39,24 +44,24 @@
                 Chi tiết giải đấu
             </h2>
             <div class="user-wrapper">
-                <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" width="40px" height="40px" alt="Avatar">
+                <img src="" width="40px" height="40px" alt="Avatar">
                 <div>
-                    <h4>Admin User</h4>
-                    <small>Quản trị viên</small>
+                    <h4>Loading...</h4>
+                    <small>...</small>
                 </div>
             </div>
         </header>
 
         <main>
             <!-- Banner / Hero Section -->
-            <div class="tournament-hero">
+            <div class="tournament-hero" id="hero-banner">
                 <div class="hero-content">
                     <span class="badge success">Đang mở đăng ký</span>
-                    <h1>Marathon Mùa Hè 2024</h1>
+                    <h1>Đang tải...</h1>
                     <div class="hero-meta">
-                        <span><i class='bx bx-map'></i> Công viên Biển Đông, Đà Nẵng</span>
-                        <span><i class='bx bx-calendar'></i> 15/06/2024 - 16/06/2024</span>
-                        <span><i class='bx bx-run'></i> Điền kinh</span>
+                        <span><i class='bx bx-map'></i> ...</span>
+                        <span><i class='bx bx-calendar'></i> ...</span>
+                        <span><i class='bx bx-run'></i> ...</span>
                     </div>
                 </div>
             </div>
@@ -66,49 +71,81 @@
                 <div class="detail-left">
                     <div class="section-card">
                         <h3>Giới thiệu</h3>
-                        <p>Giải Marathon Mùa Hè 2024 là sự kiện thể thao lớn nhất trong năm tại Đà Nẵng, quy tụ hơn 5.000 vận động viên chuyên nghiệp và phong trào. Cung đường chạy tuyệt đẹp dọc bờ biển Mỹ Khê hứa hẹn mang lại trải nghiệm khó quên.</p>
-                        <p>Các cự ly thi đấu: 5km, 10km, 21km và 42km.</p>
+                        <p id="desc-content" style="white-space: pre-line;">Đang tải mô tả...</p>
                     </div>
 
-                    <div class="section-card">
-                        <h3>Lịch thi đấu</h3>
+                    <!-- Khu vực quản lý đăng ký (Admin Only) -->
+                    <div class="section-card" id="registration-section" style="display: none;">
+                        <h3>Danh sách đăng ký (Admin)</h3>
                         <div class="table-responsive">
                             <table class="schedule-table">
                                 <thead>
                                     <tr>
-                                        <th>Thời gian</th>
-                                        <th>Nội dung</th>
-                                        <th>Địa điểm</th>
-                                        <th>Ghi chú</th>
+                                        <th>Đội / VĐV</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>04:30 - 15/06</td>
-                                        <td>Xuất phát 42km</td>
-                                        <td>Cổng chính</td>
-                                        <td>Check-in trước 30p</td>
-                                    </tr>
-                                    <tr>
-                                        <td>05:00 - 15/06</td>
-                                        <td>Xuất phát 21km</td>
-                                        <td>Cổng chính</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>06:00 - 15/06</td>
-                                        <td>Xuất phát 10km & 5km</td>
-                                        <td>Cổng phụ</td>
-                                        <td>Vui chạy</td>
-                                    </tr>
-                                    <tr>
-                                        <td>09:00 - 15/06</td>
-                                        <td>Trao giải</td>
-                                        <td>Sân khấu chính</td>
-                                        <td>Tất cả cự ly</td>
-                                    </tr>
+                                <tbody id="registration-list">
+                                    <tr><td colspan="3">Đang tải dữ liệu...</td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <!-- Khu vực Bảng xếp hạng -->
+                    <div class="section-card" id="standings-section">
+                        <h3>Bảng xếp hạng</h3>
+                        <div class="table-responsive">
+                            <table class="standings-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th style="text-align: left;">Đội / VĐV</th>
+                                        <th>Trận</th>
+                                        <th>Thắng</th>
+                                        <th>Hòa</th>
+                                        <th>Thua</th>
+                                        <th>Điểm</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="standings-list">
+                                    <tr><td colspan="7">Chưa có dữ liệu thi đấu</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Khu vực Lịch thi đấu -->
+                    <div class="section-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3>Lịch thi đấu</h3>
+                            <div>
+                                <!-- Nút tạo lịch (Chỉ hiện khi Admin + Chưa có trận nào) -->
+                                <button id="btn-generate-schedule" style="display: none; padding: 5px 10px; font-size: 0.8rem; background: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                    <i class='bx bx-cog'></i> Tạo lịch tự động
+                                </button>
+                                <!-- Nút thêm trận đấu thủ công (Admin) -->
+                                <button id="btn-add-match" style="display: none; padding: 5px 10px; font-size: 0.8rem; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">
+                                    <i class='bx bx-plus'></i> Thêm trận đấu
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cặp đấu</th>
+                                        <th>Thời gian & Sân</th>
+                                        <th>Tỉ số</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matches-list">
+                                    <!-- Dữ liệu trận đấu sẽ được JS render tại đây -->
+                                </tbody>
+                            </table>
+                            <p id="no-matches-msg" style="text-align: center; padding: 15px; color: #64748b; display: none;">Chưa có lịch thi đấu.</p>
                         </div>
                     </div>
                 </div>
@@ -119,18 +156,18 @@
                     <div class="reg-card">
                         <div class="reg-header">
                             <h3>Thông tin đăng ký</h3>
-                            <span class="price">500.000đ</span>
+                            <span class="price" id="fee-display">...</span>
                         </div>
                         <div class="reg-body">
                             <ul>
-                                <li><i class='bx bx-time'></i> Hạn đăng ký: <strong>10/06/2024</strong></li>
-                                <li><i class='bx bx-user-check'></i> Đã đăng ký: <strong>1,240/2,000</strong></li>
-                                <li><i class='bx bx-id-card'></i> Bao gồm: Bib, Áo, Medal</li>
+                                <li><i class='bx bx-time'></i> Hạn đăng ký: <strong id="deadline-text">...</strong></li>
+                                <li><i class='bx bx-user-check'></i> Số lượng: <strong id="participants-text">...</strong></li>
+                                <li><i class='bx bx-id-card'></i> Trạng thái: <strong id="status-text">...</strong></li>
                             </ul>
                             <div class="user-status">
                                 <i class='bx bx-info-circle'></i> Bạn chưa đăng ký giải này
                             </div>
-                            <button class="btn-register">Đăng ký tham gia ngay</button>
+                            <button class="btn-register" id="btn-action">Đăng ký tham gia ngay</button>
                         </div>
                     </div>
 
@@ -138,10 +175,10 @@
                     <div class="organizer-card">
                         <h4>Ban tổ chức</h4>
                         <div class="org-info">
-                            <img src="https://ui-avatars.com/api/?name=Da+Nang+Sport&background=0D8ABC&color=fff" alt="Org">
+                            <img src="https://ui-avatars.com/api/?name=BTC&background=0D8ABC&color=fff" alt="Org">
                             <div>
-                                <strong>Sở TDTT Đà Nẵng</strong>
-                                <small>Liên hệ: contact@danang.gov.vn</small>
+                                <strong>Ban Tổ Chức</strong>
+                                <small id="contact-info">...</small>
                             </div>
                         </div>
                     </div>
@@ -150,11 +187,201 @@
         </main>
     </div>
 
+    <!-- Modal Chỉnh sửa trận đấu -->
+    <div id="matchModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('matchModal').style.display='none'">&times;</span>
+            <h3 style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Cập nhật trận đấu</h3>
+            <form id="matchForm">
+                <input type="hidden" id="edit_match_id">
+                
+                <div class="form-group">
+                    <label>Thời gian thi đấu</label>
+                    <input type="datetime-local" id="edit_start_time">
+                </div>
+
+                <div class="form-group">
+                    <label>Địa điểm / Sân</label>
+                    <input type="text" id="edit_venue" placeholder="VD: Sân số 1">
+                </div>
+
+                <div class="form-group">
+                    <label>Tỉ số</label>
+                    <div class="score-inputs">
+                        <div>
+                            <small id="label_team1">Đội 1</small>
+                            <input type="number" id="edit_score1" placeholder="0">
+                        </div>
+                        <div>
+                            <small id="label_team2">Đội 2</small>
+                            <input type="number" id="edit_score2" placeholder="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select id="edit_status">
+                        <option value="scheduled">Lên lịch (Ẩn khỏi Live)</option>
+                        <option value="upcoming">Sắp diễn ra (Hiện lên Live)</option>
+                        <option value="live">Đang đá (Live)</option>
+                        <option value="finished">Đã kết thúc (Ẩn khỏi Live)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-save-match">Lưu cập nhật</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Trận Đấu Mới (Manual) -->
+    <div id="createMatchModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('createMatchModal').style.display='none'">&times;</span>
+            <h3 style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Thêm trận đấu thủ công</h3>
+            <form id="createMatchForm">
+                <div class="form-group">
+                    <label>Đội 1 / VĐV 1</label>
+                    <input type="text" id="new_team1" required placeholder="Nhập tên đội 1">
+                </div>
+                <div class="form-group">
+                    <label>Đội 2 / VĐV 2</label>
+                    <input type="text" id="new_team2" required placeholder="Nhập tên đội 2">
+                </div>
+                <div class="form-group">
+                    <label>Vòng đấu</label>
+                    <input type="text" id="new_round" value="Vòng bảng">
+                </div>
+                <div class="form-group">
+                    <label>Thời gian</label>
+                    <input type="datetime-local" id="new_start_time">
+                </div>
+                <div class="form-group">
+                    <label>Sân đấu</label>
+                    <input type="text" id="new_venue" placeholder="Sân A">
+                </div>
+                <button type="submit" class="btn-save-match">Tạo trận đấu</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Nhúng Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             // 1. Lấy ID từ URL
             const urlParams = new URLSearchParams(window.location.search);
             const tournamentId = urlParams.get('id');
+
+            // Lấy thông tin user (đưa lên đầu để dùng chung)
+            const userStr = localStorage.getItem('user');
+            const user = userStr ? JSON.parse(userStr) : null;
+
+            // Biến lưu thông tin giải đấu để dùng cho sự kiện click
+            let tournamentData = null;
+
+            // --- SOCKET.IO SETUP ---
+            const socket = io();
+            socket.on('score_updated', (data) => {
+                console.log('Realtime update received:', data);
+                // Reload danh sách trận đấu khi có bất kỳ cập nhật nào
+                loadMatches(tournamentId);
+            });
+
+            // --- KHAI BÁO HÀM GLOBAL (Đưa lên đầu để đảm bảo luôn chạy được) ---
+            
+            // 1. Hàm Duyệt / Từ chối đăng ký
+            window.updateRegStatus = async (regId, status) => {
+                console.log(`Click updateRegStatus: ID=${regId}, Status=${status}`);
+                
+                if (!user || user.role !== 'admin') {
+                    alert('Bạn không có quyền thực hiện thao tác này (Yêu cầu Admin)');
+                    return;
+                }
+
+                const actionName = status === 'approved' ? 'DUYỆT' : 'TỪ CHỐI';
+                if(!confirm(`Bạn có chắc chắn muốn ${actionName} đơn đăng ký này?`)) return;
+                
+                try {
+                    const res = await fetch(`/api/registrations/${regId}`, {
+                        method: 'PUT',
+                        headers: { 
+                            'Content-Type': 'application/json', 
+                            'x-role': user.role 
+                        },
+                        body: JSON.stringify({ status })
+                    });
+                    
+                    const data = await res.json();
+                    
+                    if (res.ok) {
+                        // Load lại danh sách ngay lập tức
+                        await loadRegistrations(tournamentId);
+                        alert(`Đã ${actionName} thành công!`);
+                    } else {
+                        alert(data.message || 'Lỗi cập nhật từ server');
+                    }
+                } catch(e) { 
+                    console.error('Lỗi kết nối:', e);
+                    alert('Lỗi kết nối server: ' + e.message); 
+                }
+            };
+
+            // 2. Hàm Load danh sách đăng ký
+            async function loadRegistrations(id) {
+                const regSection = document.getElementById('registration-section');
+                const regList = document.getElementById('registration-list');
+                
+                if (regSection) regSection.style.display = 'block';
+
+                try {
+                    const res = await fetch(`/api/tournaments/${id}/registrations`);
+                    if (!res.ok) {
+                        console.error('API Error:', res.status);
+                        return;
+                    }
+                    const regs = await res.json();
+                    console.log('Danh sách đăng ký:', regs);
+
+                    if(regs.length === 0) {
+                        regList.innerHTML = '<tr><td colspan="3" style="text-align:center">Chưa có đơn đăng ký nào</td></tr>';
+                        return;
+                    }
+
+                    // Tạo HTML chuỗi trước rồi gán 1 lần để tối ưu hiệu năng
+                    let html = '';
+                    regs.forEach(r => {
+                        const nameDisplay = r.team_name 
+                            ? `<strong>${r.team_name}</strong><br><small>${r.full_name}</small>` 
+                            : `<strong>${r.full_name}</strong>`;
+                        
+                        let statusBadge = `<span class="badge warning">Chờ duyệt</span>`;
+                        let actions = `
+                            <button onclick="updateRegStatus(${r.id}, 'approved')" style="color:green; cursor:pointer; margin-right:10px; border:1px solid green; padding:2px 8px; border-radius:4px; background:white;">✔ Duyệt</button>
+                            <button onclick="updateRegStatus(${r.id}, 'rejected')" style="color:red; cursor:pointer; border:1px solid red; padding:2px 8px; border-radius:4px; background:white;">✖ Từ chối</button>
+                        `;
+
+                        if (r.status === 'approved') {
+                            statusBadge = `<span class="badge success">Đã duyệt</span>`;
+                            actions = `<span style="color:green; font-weight:bold;"><i class='bx bx-check'></i> Đã duyệt</span>`;
+                        } else if (r.status === 'rejected') {
+                            statusBadge = `<span class="badge danger">Từ chối</span>`;
+                            actions = `<span style="color:red;">Đã từ chối</span>`;
+                        }
+
+                        html += `
+                            <tr>
+                                <td>${nameDisplay}</td>
+                                <td>${statusBadge}</td>
+                                <td>${actions}</td>
+                            </tr>
+                        `;
+                    });
+                    regList.innerHTML = html;
+
+                } catch(e) { console.error(e); }
+            }
 
             if (!tournamentId) {
                 alert('Không tìm thấy ID giải đấu!');
@@ -167,21 +394,51 @@
                 const response = await fetch(`/api/tournaments/${tournamentId}`);
                 if (!response.ok) throw new Error('Lỗi tải thông tin');
                 const t = await response.json();
+                tournamentData = t; // Lưu lại dữ liệu
 
                 // 3. Điền dữ liệu vào giao diện
                 document.querySelector('.hero-content h1').textContent = t.name;
+
+                // --- Ảnh bìa (Background) ---
+                if (t.banner_url) {
+                    const heroBanner = document.getElementById('hero-banner');
+                    heroBanner.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${t.banner_url}')`;
+                    heroBanner.style.backgroundSize = 'cover';
+                    heroBanner.style.backgroundPosition = 'center';
+                }
+
+                // --- Mô tả ---
+                document.getElementById('desc-content').textContent = t.description || 'Chưa có mô tả cho giải đấu này.';
+
+                // --- Thông tin đăng ký ---
+                const feeFormatted = t.fee > 0 
+                    ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(t.fee) 
+                    : 'Miễn phí';
+                document.getElementById('fee-display').textContent = feeFormatted;
+
+                const deadline = t.registration_deadline 
+                    ? new Date(t.registration_deadline).toLocaleDateString('vi-VN') 
+                    : 'Không giới hạn';
+                document.getElementById('deadline-text').textContent = deadline;
+
+                const max = t.max_participants > 0 ? t.max_participants : '∞';
+                document.getElementById('participants-text').textContent = `Giới hạn: ${max}`;
+
+                // --- Ban tổ chức ---
+                document.getElementById('contact-info').textContent = t.contact_info || 'Đang cập nhật...';
                 
                 // Cập nhật Badge trạng thái
                 const badge = document.querySelector('.hero-content .badge');
+                const statusTextElem = document.getElementById('status-text');
                 if (t.status === 'open') {
                     badge.className = 'badge success';
-                    badge.textContent = 'Đang mở đăng ký';
+                    badge.textContent = statusTextElem.textContent = 'Đang mở đăng ký';
                 } else if (t.status === 'upcoming') {
                     badge.className = 'badge warning';
-                    badge.textContent = 'Sắp mở';
+                    badge.textContent = statusTextElem.textContent = 'Sắp diễn ra (Chưa mở)';
                 } else {
                     badge.className = 'badge danger';
-                    badge.textContent = 'Đã đóng';
+                    badge.textContent = statusTextElem.textContent = 'Đã đóng';
                 }
 
                 // Cập nhật thông tin Meta (Địa điểm, Thời gian, Môn thi)
@@ -194,46 +451,399 @@
                     <span><i class='bx bx-run'></i> ${t.sport_type}</span>
                 `;
 
+                // Load danh sách trận đấu ngay sau khi có thông tin giải
+                loadMatches(tournamentId);
+
+                // Load danh sách đăng ký (Nếu là Admin)
+                if (user && user.role === 'admin') {
+                    console.log('User is Admin, loading registrations...');
+                    loadRegistrations(tournamentId);
+                }
+
             } catch (error) {
                 console.error(error);
                 alert('Không thể tải thông tin giải đấu.');
             }
 
-            // 4. Xử lý sự kiện Đăng ký
-            const btnRegister = document.querySelector('.btn-register');
-            btnRegister.addEventListener('click', async () => {
-                const userStr = localStorage.getItem('currentUser');
-                if (!userStr) {
-                    alert('Vui lòng đăng nhập để thực hiện đăng ký!');
-                    window.location.href = '/login/login.html';
+            // 4. Phân quyền & Xử lý sự kiện
+            const btnRegister = document.getElementById('btn-action');
+
+            // Logic hiển thị nút theo trạng thái giải đấu (Nếu không phải Admin)
+            if (user && user.role !== 'admin' && tournamentData) {
+                if (tournamentData.status !== 'open') {
+                    btnRegister.disabled = true;
+                    btnRegister.textContent = tournamentData.status === 'upcoming' ? 'Chưa mở đăng ký' : 'Đã kết thúc';
+                    btnRegister.style.backgroundColor = '#94a3b8'; // Màu xám
+                    btnRegister.style.cursor = 'not-allowed';
+                }
+            }
+
+            // Nếu là Admin -> Đổi nút Đăng ký thành Chỉnh sửa
+            if (user && user.role === 'admin') {
+                btnRegister.textContent = 'Chỉnh sửa giải đấu';
+                btnRegister.classList.add('btn-edit'); // Thêm class để style nếu cần
+                btnRegister.style.backgroundColor = '#f59e0b'; // Màu cam cho nút sửa
+                
+                btnRegister.onclick = () => {
+                    // Chuyển hướng về trang quản lý (hoặc mở modal sửa nếu có)
+                    window.location.href = '/tournaments/tournaments.html';
+                };
+                // return; // Bỏ return để code phía dưới vẫn chạy nếu cần
+            } else {
+                // Logic Đăng ký (Cho user thường)
+                btnRegister.addEventListener('click', async () => {
+                    // Sửa key currentUser -> user
+                    const userStr = localStorage.getItem('user');
+                    if (!userStr) {
+                        alert('Vui lòng đăng nhập để thực hiện đăng ký!');
+                        window.location.href = '/login/login.html';
+                        return;
+                    }
+
+                    const user = JSON.parse(userStr);
+                    let teamName = null;
+
+                    // Kiểm tra thể thức thi đấu
+                    if (tournamentData && (tournamentData.format === 'knockout' || tournamentData.format === 'round-robin')) {
+                        teamName = prompt('Đây là giải đấu yêu cầu đăng ký theo Đội/Nhóm.\nVui lòng nhập Tên Đội của bạn:');
+                        if (!teamName || teamName.trim() === '') {
+                            alert('Bạn cần nhập tên đội để đăng ký!');
+                            return;
+                        }
+                    }
+                    
+                    try {
+                        const response = await fetch('/api/register', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            // Gửi thêm teamName (nếu có)
+                            body: JSON.stringify({ userId: user.id, tournamentId: tournamentId, teamName: teamName })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok && data.success) {
+                            alert(data.message);
+                            btnRegister.textContent = 'Đang chờ duyệt';
+                            btnRegister.disabled = true;
+                            btnRegister.style.opacity = '0.6';
+                            btnRegister.style.cursor = 'not-allowed';
+                        } else {
+                            alert(data.message || 'Đăng ký thất bại');
+                        }
+                    } catch (error) {
+                        console.error('Lỗi:', error);
+                        alert('Không thể kết nối đến Server.');
+                    }
+                });
+            }
+
+            // --- 5. HÀM LOAD DANH SÁCH TRẬN ĐẤU ---
+            async function loadMatches(id) {
+                const matchesList = document.getElementById('matches-list');
+                const noMatchesMsg = document.getElementById('no-matches-msg');
+                const btnGenerate = document.getElementById('btn-generate-schedule');
+                const btnAddMatch = document.getElementById('btn-add-match');
+
+                try {
+                    const res = await fetch(`/api/tournaments/${id}/matches`);
+                    if (!res.ok) {
+                        console.error('Lỗi load matches:', res.status);
+                        return;
+                    }
+                    const matches = await res.json();
+
+                    matchesList.innerHTML = '';
+
+                    // Logic hiển thị nút Tạo lịch & Thêm trận
+                    if (user && user.role === 'admin') {
+                        // Luôn hiện nút Thêm trận đấu thủ công
+                        if (btnAddMatch) btnAddMatch.style.display = 'inline-block';
+                        
+                        // Chỉ hiện nút Tạo lịch tự động nếu chưa có trận nào
+                        if (matches.length === 0) {
+                            if (btnGenerate) btnGenerate.style.display = 'inline-block';
+                        } else {
+                            if (btnGenerate) btnGenerate.style.display = 'none';
+                        }
+                    } else {
+                        if (btnGenerate) btnGenerate.style.display = 'none';
+                        if (btnAddMatch) btnAddMatch.style.display = 'none';
+                    }
+
+                    if (matches.length === 0) {
+                        noMatchesMsg.style.display = 'block';
+                        // Xóa bảng xếp hạng nếu chưa có trận đấu
+                        document.getElementById('standings-list').innerHTML = '<tr><td colspan="7">Chưa có dữ liệu thi đấu</td></tr>';
+                        return;
+                    }
+
+                    noMatchesMsg.style.display = 'none';
+                    
+                    // Tính toán bảng xếp hạng
+                    calculateStandings(matches);
+
+                    matches.forEach(m => {
+                        // Badge trạng thái
+                        let statusBadge = '';
+                        if (m.status === 'live') statusBadge = '<span style="background:#ef4444; color:white; font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:bold; margin-right:5px;">LIVE</span>';
+                        else if (m.status === 'upcoming') statusBadge = '<span style="background:#f59e0b; color:white; font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:bold; margin-right:5px;">SẮP ĐẤU</span>';
+                        else if (m.status === 'finished') statusBadge = '<span style="background:#64748b; color:white; font-size:0.7rem; padding:2px 6px; border-radius:4px; font-weight:bold; margin-right:5px;">KẾT THÚC</span>';
+
+                        // Format thời gian (nếu có)
+                        const timeStr = m.start_time ? new Date(m.start_time).toLocaleString('vi-VN') : 'Chưa xếp lịch';
+                        const venueStr = m.venue || 'Chưa xếp sân';
+                        
+                        // Format tỉ số
+                        const scoreDisplay = (m.score1 !== null && m.score2 !== null) 
+                            ? `<span style="font-weight:bold; color:#2563eb">${m.score1} - ${m.score2}</span>` 
+                            : '<span style="color:#94a3b8">--</span>';
+
+                        // Nút cập nhật & Xóa (Chỉ Admin thấy)
+                        let actionBtn = '';
+                        if (user && user.role === 'admin') {
+                            // Lưu object match vào attribute để dùng khi click
+                            const matchData = encodeURIComponent(JSON.stringify(m));
+                            actionBtn += `<button onclick="openEditMatch('${matchData}')" style="margin-right:5px; cursor:pointer; color:#2563eb; border:1px solid #2563eb; background:none; padding:2px 6px; border-radius:4px;">Sửa</button>`;
+                            actionBtn += `<button onclick="deleteMatch(${m.id})" style="cursor:pointer; color:#ef4444; border:1px solid #ef4444; background:none; padding:2px 6px; border-radius:4px;">Xóa</button>`;
+                        }
+
+                        const tr = `
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 500;">${m.team1} <span style="color:#64748b; font-size:0.8rem">vs</span> ${m.team2}</div>
+                                    <small style="color:#64748b">${m.round}</small>
+                                </td>
+                                <td>
+                                    <div style="font-size: 0.85rem;">${statusBadge}<i class='bx bx-time'></i> ${timeStr}</div>
+                                    <div style="font-size: 0.85rem;"><i class='bx bx-map'></i> ${venueStr}</div>
+                                </td>
+                                <td style="text-align: center;">${scoreDisplay}</td>
+                                <td style="text-align: center;">${actionBtn}</td>
+                            </tr>
+                        `;
+                        matchesList.innerHTML += tr;
+                    });
+
+                } catch (err) {
+                    console.error('Lỗi load matches:', err);
+                }
+            }
+
+            // --- 6. XỬ LÝ NÚT TẠO LỊCH ---
+            const btnGenerate = document.getElementById('btn-generate-schedule');
+            if (btnGenerate) {
+                btnGenerate.onclick = async () => {
+                    if (!confirm('Hệ thống sẽ tự động chốt danh sách đăng ký và tạo lịch thi đấu ngẫu nhiên. Bạn có chắc chắn?')) return;
+
+                    try {
+                        const res = await fetch(`/api/tournaments/${tournamentId}/generate-matches`, {
+                            method: 'POST',
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'x-role': user.role 
+                            }
+                        });
+                        const data = await res.json();
+                        
+                        if (res.ok) {
+                            alert(data.message);
+                            loadMatches(tournamentId); // Load lại danh sách
+                        } else {
+                            alert(data.message || 'Lỗi tạo lịch');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Lỗi kết nối Server');
+                    }
+                };
+            }
+
+            // --- 6.1 XỬ LÝ NÚT THÊM TRẬN ĐẤU (Thủ công) ---
+            const btnAddMatch = document.getElementById('btn-add-match');
+            const createMatchModal = document.getElementById('createMatchModal');
+            const createMatchForm = document.getElementById('createMatchForm');
+
+            if (btnAddMatch) {
+                btnAddMatch.onclick = () => createMatchModal.style.display = 'block';
+            }
+
+            if (createMatchForm) {
+                createMatchForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const payload = {
+                        tournament_id: tournamentId,
+                        team1: document.getElementById('new_team1').value,
+                        team2: document.getElementById('new_team2').value,
+                        round: document.getElementById('new_round').value,
+                        start_time: document.getElementById('new_start_time').value,
+                        venue: document.getElementById('new_venue').value
+                    };
+
+                    try {
+                        const res = await fetch('/api/matches', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'x-role': user.role },
+                            body: JSON.stringify(payload)
+                        });
+                        const data = await res.json();
+                        if (res.ok) { 
+                            alert('Thêm thành công'); 
+                            createMatchModal.style.display = 'none'; 
+                            loadMatches(tournamentId); 
+                            createMatchForm.reset(); 
+                        }
+                        else { alert(data.message); }
+                    } catch(err) { alert('Lỗi kết nối'); }
+                });
+            }
+
+            // --- 9. TÍNH BẢNG XẾP HẠNG (Standings) ---
+            function calculateStandings(matches) {
+                const standings = {};
+
+                matches.forEach(m => {
+                    // Khởi tạo team nếu chưa có
+                    [m.team1, m.team2].forEach(team => {
+                        if (!standings[team]) {
+                            standings[team] = { name: team, played: 0, won: 0, drawn: 0, lost: 0, points: 0 };
+                        }
+                    });
+
+                    // Chỉ tính điểm nếu trận đấu đã kết thúc (có tỉ số)
+                    if (m.score1 !== null && m.score2 !== null) {
+                        standings[m.team1].played++;
+                        standings[m.team2].played++;
+
+                        if (m.score1 > m.score2) {
+                            standings[m.team1].won++;
+                            standings[m.team1].points += 3;
+                            standings[m.team2].lost++;
+                        } else if (m.score2 > m.score1) {
+                            standings[m.team2].won++;
+                            standings[m.team2].points += 3;
+                            standings[m.team1].lost++;
+                        } else {
+                            standings[m.team1].drawn++;
+                            standings[m.team1].points += 1;
+                            standings[m.team2].drawn++;
+                            standings[m.team2].points += 1;
+                        }
+                    }
+                });
+
+                // Chuyển object thành array và sắp xếp theo điểm
+                const sortedStandings = Object.values(standings).sort((a, b) => b.points - a.points);
+
+                // Render HTML
+                const tbody = document.getElementById('standings-list');
+                tbody.innerHTML = '';
+                
+                if (sortedStandings.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7">Chưa có dữ liệu thi đấu</td></tr>';
                     return;
                 }
 
-                const user = JSON.parse(userStr);
+                sortedStandings.forEach((team, index) => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td style="text-align: left; font-weight: 500;">${team.name}</td>
+                            <td>${team.played}</td>
+                            <td>${team.won}</td>
+                            <td>${team.drawn}</td>
+                            <td>${team.lost}</td>
+                            <td style="font-weight: bold;">${team.points}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // --- 7. XỬ LÝ MODAL EDIT MATCH (Global functions) ---
+            window.openEditMatch = (matchDataEncoded) => {
+                const m = JSON.parse(decodeURIComponent(matchDataEncoded));
                 
-                try {
-                    const response = await fetch('/api/register', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ userId: user.id, tournamentId: tournamentId })
-                    });
+                document.getElementById('edit_match_id').value = m.id;
+                document.getElementById('label_team1').textContent = m.team1;
+                document.getElementById('label_team2').textContent = m.team2;
+                document.getElementById('edit_score1').value = m.score1;
+                document.getElementById('edit_score2').value = m.score2;
+                document.getElementById('edit_venue').value = m.venue || '';
+                document.getElementById('edit_status').value = m.status || 'scheduled';
 
-                    const data = await response.json();
-
-                    if (response.ok && data.success) {
-                        alert(data.message);
-                        btnRegister.textContent = 'Đang chờ duyệt';
-                        btnRegister.disabled = true;
-                        btnRegister.style.opacity = '0.6';
-                        btnRegister.style.cursor = 'not-allowed';
-                    } else {
-                        alert(data.message || 'Đăng ký thất bại');
-                    }
-                } catch (error) {
-                    console.error('Lỗi:', error);
-                    alert('Không thể kết nối đến Server.');
+                // Format datetime-local (YYYY-MM-DDTHH:MM)
+                if (m.start_time) {
+                    const date = new Date(m.start_time);
+                    // Cần chỉnh về local time string đúng định dạng
+                    const localIsoString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+                    document.getElementById('edit_start_time').value = localIsoString;
+                } else {
+                    document.getElementById('edit_start_time').value = '';
                 }
-            });
+
+                document.getElementById('matchModal').style.display = 'block';
+            };
+
+            window.deleteMatch = async (id) => {
+                if(!confirm('Bạn có chắc chắn muốn xóa trận đấu này?')) return;
+                try {
+                    const res = await fetch(`/api/matches/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'x-role': user.role }
+                    });
+                    if(res.ok) {
+                        loadMatches(tournamentId);
+                    } else {
+                        alert('Lỗi khi xóa');
+                    }
+                } catch(e) { console.error(e); }
+            };
+
+            // Xử lý Submit Form Edit
+            const matchForm = document.getElementById('matchForm');
+            if (matchForm) {
+                matchForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const matchId = document.getElementById('edit_match_id').value;
+                    
+                    const payload = {
+                        start_time: document.getElementById('edit_start_time').value,
+                        venue: document.getElementById('edit_venue').value,
+                        score1: document.getElementById('edit_score1').value,
+                        score2: document.getElementById('edit_score2').value,
+                        status: document.getElementById('edit_status').value
+                    };
+
+                    try {
+                        const res = await fetch(`/api/matches/${matchId}`, {
+                            method: 'PUT',
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'x-role': user.role 
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                        
+                        if(res.ok) {
+                            document.getElementById('matchModal').style.display = 'none';
+                            loadMatches(tournamentId);
+                        } else {
+                            alert('Cập nhật thất bại');
+                        }
+                    } catch(err) {
+                        console.error(err);
+                        alert('Lỗi kết nối');
+                    }
+                });
+            }
+
+            // Close modal when clicking outside
+            window.onclick = (event) => {
+                const modal = document.getElementById('matchModal');
+                const createModal = document.getElementById('createMatchModal');
+                if (event.target == modal) modal.style.display = "none";
+                if (event.target == createModal) createModal.style.display = "none";
+            }
         });
     </script>
     <!-- Script Common (Logic chung) -->

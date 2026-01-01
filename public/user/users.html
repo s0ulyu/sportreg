@@ -9,139 +9,195 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* CSS cho Modal (Tương tự trang Tournaments) */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fff; margin: 5% auto; padding: 25px; border-radius: 8px; width: 500px; max-width: 90%; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #666; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #333; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+        .btn-submit { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; font-weight: 600; }
+        .btn-submit:hover { background: #1d4ed8; }
+        
+        /* Badge Role Colors */
+        .badge.role-admin { background: #fee2e2; color: #991b1b; }
+        .badge.role-athlete { background: #dcfce7; color: #166534; }
+        .badge.role-coach { background: #e0f2fe; color: #0369a1; }
+    </style>
 </head>
-<!-- Giả lập quyền: class="role-admin" (hiển thị) hoặc "role-athlete" (ẩn) -->
-<body class="role-admin">
+<body>
 
     <input type="checkbox" id="nav-toggle">
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <h2><i class='bx bx-run'></i> <span>SportReg</span></h2>
-        </div>
-        <div class="sidebar-menu">
-            <ul>
-                <li><a href="/dashboard/dashboard.html"><i class='bx bx-grid-alt'></i> <span>Dashboard</span></a></li>
-                <li><a href="/tournaments/tournaments.html"><i class='bx bx-trophy'></i> <span>Giải đấu</span></a></li>
-                <li><a href="#"><i class='bx bx-edit'></i> <span>Đăng ký</span></a></li>
-                <li><a href="/live-status/live-status.html"><i class='bx bx-pulse'></i> <span>Trạng thái Realtime</span></a></li>
-                <li class="menu-users"><a href="/user/users.html" class="active"><i class='bx bx-user'></i> <span>Người dùng</span></a></li>
-                <li class="menu-settings"><a href="/setting/settings.html"><i class='bx bx-cog'></i> <span>Cài đặt</span></a></li>
-            </ul>
-        </div>
-    </div>
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
 
     <!-- Main Content -->
     <div class="main-content">
         <header>
             <h2>
                 <label for="nav-toggle"><i class='bx bx-menu'></i></label>
-                Quản lý người dùng
+                Người dùng
             </h2>
             <div class="user-wrapper">
-                <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" width="40px" height="40px" alt="Avatar">
+                <img src="" width="40px" height="40px" alt="Avatar">
                 <div>
-                    <h4>Admin User</h4>
-                    <small>Quản trị viên</small>
+                    <h4>Loading...</h4>
+                    <small>...</small>
                 </div>
             </div>
         </header>
 
         <main>
-            <!-- Page Header -->
             <div class="page-header">
-                <h1>Danh sách thành viên</h1>
+                <h1>Danh sách người dùng</h1>
                 <button class="btn-create"><i class='bx bx-user-plus'></i> Thêm mới</button>
             </div>
 
-            <!-- Toolbar -->
-            <div class="toolbar">
-                <div class="search-wrapper">
-                    <i class='bx bx-search'></i>
-                    <input type="search" placeholder="Tìm kiếm theo tên, email...">
-                </div>
-                <div class="filter-wrapper">
-                    <select>
-                        <option value="all">Tất cả vai trò</option>
-                        <option value="admin">Quản trị viên</option>
-                        <option value="athlete">Vận động viên</option>
-                        <option value="referee">Trọng tài</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Table -->
             <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Thành viên</th>
-                            <th>Email</th>
-                            <th>Vai trò</th>
-                            <th>Trạng thái</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="user-info">
-                                    <img src="https://ui-avatars.com/api/?name=Nguyen+Van+A&background=0D8ABC&color=fff" alt="">
-                                    <div>
-                                        <h4>Nguyễn Văn A</h4>
-                                        <small>ID: #USR001</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>nguyenvana@gmail.com</td>
-                            <td>
-                                <select class="role-select athlete">
-                                    <option value="athlete" selected>Vận động viên</option>
-                                    <option value="admin">Quản trị viên</option>
-                                    <option value="referee">Trọng tài</option>
-                                </select>
-                            </td>
-                            <td><span class="status-dot active"></span> Hoạt động</td>
-                            <td>
-                                <div class="actions">
-                                    <button class="btn-action lock" title="Khoá tài khoản"><i class='bx bx-lock-open-alt'></i></button>
-                                    <button class="btn-action delete" title="Xóa"><i class='bx bx-trash'></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="user-info">
-                                    <img src="https://ui-avatars.com/api/?name=Tran+Thi+B&background=ef4444&color=fff" alt="">
-                                    <div>
-                                        <h4>Trần Thị B</h4>
-                                        <small>ID: #USR002</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>tranthib@gmail.com</td>
-                            <td>
-                                <select class="role-select admin">
-                                    <option value="athlete">Vận động viên</option>
-                                    <option value="admin" selected>Quản trị viên</option>
-                                    <option value="referee">Trọng tài</option>
-                                </select>
-                            </td>
-                            <td><span class="status-dot inactive"></span> Đã khoá</td>
-                            <td>
-                                <div class="actions">
-                                    <button class="btn-action unlock" title="Mở khoá"><i class='bx bx-lock-alt'></i></button>
-                                    <button class="btn-action delete" title="Xóa"><i class='bx bx-trash'></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Thêm các dòng khác tương tự -->
-                    </tbody>
-                </table>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Họ và tên</th>
+                                        <th>Email</th>
+                                        <th>Vai trò</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="user-table-body">
+                                    <!-- Dữ liệu sẽ được load từ API -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </main>
     </div>
+
+    <!-- Modal Thêm User -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Thêm người dùng mới</h2>
+            <form id="createUserForm">
+                <div class="form-group">
+                    <label>Họ và tên</label>
+                    <input type="text" id="full_name" required placeholder="Nguyễn Văn A">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" required placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="password" required placeholder="********">
+                </div>
+                <div class="form-group">
+                    <label>Vai trò</label>
+                    <select id="role">
+                        <option value="athlete">Vận động viên</option>
+                        <option value="coach">Huấn luyện viên</option>
+                        <option value="admin">Quản trị viên (Admin)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Tạo tài khoản</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('user');
+            const user = userStr ? JSON.parse(userStr) : null;
+            const modal = document.getElementById('userModal');
+            const btnCreate = document.querySelector('.btn-create');
+            const spanClose = document.querySelector('.close');
+            const form = document.getElementById('createUserForm');
+
+            // 1. Load danh sách User
+            async function loadUsers() {
+                try {
+                    const res = await fetch('/api/users', {
+                        headers: { 'x-role': user.role }
+                    });
+                    const users = await res.json();
+                    
+                    const tbody = document.getElementById('user-table-body');
+                    tbody.innerHTML = '';
+
+                    users.forEach(u => {
+                        let roleBadge = '<span class="badge role-athlete">Vận động viên</span>';
+                        if (u.role === 'admin') {
+                            roleBadge = '<span class="badge role-admin">Quản trị viên</span>';
+                        } else if (u.role === 'coach') {
+                            roleBadge = '<span class="badge role-coach">Huấn luyện viên</span>';
+                        }
+                        
+                        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(u.full_name)}&background=random`;
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="${avatarUrl}" alt="">
+                                        <span>${u.full_name}</span>
+                                    </div>
+                                </td>
+                                <td>${u.email}</td>
+                                <td>${roleBadge}</td>
+                                <td><span class="status-dot active"></span> Hoạt động</td>
+                                <td>
+                                    <button class="action-btn delete" onclick="deleteUser(${u.id})"><i class='bx bx-trash'></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } catch (err) { console.error(err); }
+            }
+
+            if (user && user.role === 'admin') {
+                loadUsers();
+                
+                // 2. Xử lý Modal
+                btnCreate.onclick = () => modal.style.display = "block";
+                spanClose.onclick = () => modal.style.display = "none";
+                window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; }
+
+                // 3. Tạo User mới
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const payload = {
+                        full_name: document.getElementById('full_name').value,
+                        email: document.getElementById('email').value,
+                        password: document.getElementById('password').value,
+                        role: document.getElementById('role').value
+                    };
+
+                    const res = await fetch('/api/users', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'x-role': user.role },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (res.ok) { alert('Thành công'); modal.style.display = "none"; loadUsers(); form.reset(); }
+                    else { alert(data.message); }
+                });
+
+                // 4. Xóa User
+                window.deleteUser = async (id) => {
+                    if(!confirm('Xóa người dùng này?')) return;
+                    const res = await fetch(`/api/users/${id}`, { method: 'DELETE', headers: { 'x-role': user.role } });
+                    if(res.ok) loadUsers();
+                };
+            }
+        });
+    </script>
+    <script src="/js/common.js"></script>
 </body>
 </html>
